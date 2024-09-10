@@ -6,8 +6,13 @@ import 'package:t_store/utils/helpers/network_manager.dart';
 import 'package:t_store/utils/popups/full_screen_load.dart';
 import 'package:t_store/utils/popups/loaders.dart';
 
+import '../../../common/widgets/texts/section_heading.dart';
 import '../../../utils/constants/image_strings.dart';
+import '../../../utils/constants/sizes.dart';
+import '../../../utils/helpers/cloud_helper_functions.dart';
 import '../models/addressModel/AddressModel.dart';
+import '../screens/address/add_new_address.dart';
+import '../screens/address/widgets/single_address.dart';
 
 class AddressController extends GetxController {
   static AddressController get instance => Get.find();
@@ -99,23 +104,23 @@ class AddressController extends GetxController {
         selectedAddress: true,
       );
       final id = await addressRepository.addAddress(address);
-      
+
       // Update Selected Address Status
       address.id = id;
       selectedAddress(address);
-      
+
       // Remove Loader
       TFullScreenLoader.stopLoading();
-      
+
       // Show Success Message
       TLoaders.successSnackBar(title: "Congratulations", message: "Your address has been saved successfully");
-      
+
       // Refresh Address Data
       refreshData.toggle();
-      
+
       // Reset fields 
       resetFormFields();
-      
+
       // Redirect
       Navigator.of(Get.context!).pop();
     } catch(e){
@@ -125,7 +130,51 @@ class AddressController extends GetxController {
     }
   }
 
-  /// Chức năng reset lại form khi tạo thành công
+  Future<dynamic> selectNewAddressPopup(BuildContext context) {
+    return showModalBottomSheet(
+          context: context,
+          builder: (_) => Container(
+            padding: const EdgeInsets.all(TSizes.lg),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const TSectionHeading(title: 'Select Address', showActionButton: false),
+                  FutureBuilder(
+                    future: getAllUserAddress(),
+                    builder: (_, snapshot) {
+                      // Helper Function: Handle Loader, No Record, OR ERROR Message
+                      final response = TCloudHelperFunctions.checkMultiRecordState(snapshot: snapshot);
+                      if (response != null) return response;
+
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (_, index) => TSingleAddress(
+                          address: snapshot.data![index],
+                          onTap: () async {
+                            await selectAddress(snapshot.data![index]);
+                            Get.back();
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: TSizes.defaultSpace * 2),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () =>
+                          Get.to(() => const AddNewAddressScreen()),
+                      child: const Text('Add new address'),),
+                  ),
+                ]
+            )
+          )
+    );
+  }
+
+
+    /// Chức năng reset lại form khi tạo thành công
   void resetFormFields(){
     name.clear();
     phoneNumber.clear();

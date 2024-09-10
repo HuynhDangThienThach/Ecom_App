@@ -73,17 +73,27 @@ class CartController extends GetxController {
     updateCart();
   }
 
-  void removeOneFromCart(CartItemModel item){
-    int index = cartItems.indexWhere((cartItem) => cartItem.productId == item.productId && cartItem.variationId == item.variationId);
-    if (index >=0){
-      if(cartItems[index].quantity > 1){
+  void removeOneFromCart(CartItemModel item) {
+    int index = cartItems.indexWhere((cartItem) =>
+    cartItem.productId == item.productId &&
+        cartItem.variationId == item.variationId);
+
+    if (index >= 0) {
+      if (cartItems[index].quantity > 1) {
+        // Giảm số lượng sản phẩm
         cartItems[index].quantity -= 1;
+      } else {
+        // Xóa sản phẩm nếu số lượng bằng 1
+        removeFromCartDialog(index);
       }
-    } else{
-      cartItems[index].quantity == 1 ? removeFromCartDialog(index) : cartItems.removeAt(index);
+    } else {
+      // Xử lý nếu không tìm thấy sản phẩm trong giỏ hàng
+      print('Item not found in cart');
     }
+
     updateCart();
   }
+
 
   void removeFromCartDialog(int index){
     Get.defaultDialog(

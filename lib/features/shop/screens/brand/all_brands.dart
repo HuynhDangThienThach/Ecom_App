@@ -33,7 +33,7 @@ class AllBrandsScreen extends StatelessWidget {
                     if(brandController.isLoading.value) return const TBrandsShimmer();
                     if(brandController.allBrands.isEmpty){
                       return Center(
-                        child: Text('No Data Found!', style: Theme.of(context).textTheme.bodyMedium!.apply(color: Colors.white),),
+                        child: Text('No Data Found!!', style: Theme.of(context).textTheme.bodyMedium!.apply(color: Colors.white),),
                       );
                     }
                     return TGrildLayout(

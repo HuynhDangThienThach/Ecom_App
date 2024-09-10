@@ -89,7 +89,6 @@ class TProductCardVertical extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TProductTitleText(title: product.title, smallSize: true),
-                  const SizedBox(height: TSizes.spaceBtwItems / 2,),
                   // --- Brand: nhãn hiệu
                   TBrandTitleWithVerifiedIcon(title: product.brand!.name),
                 ],

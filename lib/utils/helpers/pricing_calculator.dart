@@ -9,7 +9,7 @@ class TPricingCalculator {
     double shippingCost = getShippingCost(location);
 
     double totalPrice = productPrice + taxAmount + shippingCost;
-    return totalPrice;
+    return double.parse(totalPrice.toStringAsFixed(2));
   }
 
   /// Tính toán chi phí vận chuyển

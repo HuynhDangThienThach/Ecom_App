@@ -7,10 +7,12 @@ import 'package:t_store/common/widgets/list_titles/settings_menu_title.dart';
 import 'package:t_store/common/widgets/texts/section_heading.dart';
 import 'package:t_store/features/personalization/screens/address/address.dart';
 import 'package:t_store/features/personalization/screens/profile/profile.dart';
+import 'package:t_store/features/shop/screens/cart/cart.dart';
 import 'package:t_store/utils/constants/colors.dart';
 import 'package:t_store/utils/constants/sizes.dart';
 import 'package:t_store/data/repositories/authentication/authentication_repository.dart';
 
+import '../../../../common/addData/addData.dart';
 import '../../../../common/widgets/list_titles/user_profile_title.dart';
 import '../../../shop/screens/order/order.dart';
 class SettingsScreen extends StatelessWidget {
@@ -43,7 +45,7 @@ class SettingsScreen extends StatelessWidget {
                 const SizedBox(height: TSizes.spaceBtwItems,),
 
                 TSettingMenuTitle(icon: Iconsax.safe_home, title: 'My Addresses', subTitle: 'Set shopping delivery address', onTap: () => Get.to(() => const UserAddressScreen()),),
-                const TSettingMenuTitle(icon: Iconsax.shopping_cart, title: 'My Cart', subTitle: 'Add, remove products and move to checkout'),
+                TSettingMenuTitle(icon: Iconsax.shopping_cart, title: 'My Cart', subTitle: 'Add, remove products and move to checkout', onTap: () => Get.to(() => const CartScreen()),),
                 TSettingMenuTitle(icon: Iconsax.bag_tick, title: 'My Orders', subTitle: 'In-progress and Completed Orders', onTap: () => Get.to(() => const OrderScreen()),),
                 const TSettingMenuTitle(icon: Iconsax.bank, title: 'Bank Account', subTitle: 'Withdraw balance to registered bank account'),
                 const TSettingMenuTitle(icon: Iconsax.discount_shape, title: 'My Coupons', subTitle: 'List of all the discounted coupons'),
@@ -53,7 +55,7 @@ class SettingsScreen extends StatelessWidget {
                 const SizedBox(height: TSizes.spaceBtwSections),
                 const TSectionHeading(title: 'App Settings', showActionButton: false,),
                 const SizedBox(height: TSizes.spaceBtwItems,),
-                const TSettingMenuTitle(icon: Iconsax.document_upload, title: 'Load Data', subTitle: "Upload Data to your Cloud Firebase",),
+                TSettingMenuTitle(icon: Iconsax.document_upload, title: 'Load Data', subTitle: "Upload Data to your Cloud Firebase", onTap: (){importJsonToFirestore();},),
                 TSettingMenuTitle(icon: Iconsax.document_upload, title: 'Geolocation', subTitle: "Set recommendation based on location", trailing: Switch(value: true, onChanged: (value) {}),),
                 TSettingMenuTitle(icon: Iconsax.security_user, title: 'Safe Mode', subTitle: "Search result is safe for all ages", trailing: Switch(value: false, onChanged: (value) {}),),
                 TSettingMenuTitle(icon: Iconsax.image, title: 'HD Image Quality', subTitle: "Set image quality to be seen", trailing: Switch(value: false, onChanged: (value) {}),),

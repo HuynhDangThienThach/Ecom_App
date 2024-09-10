@@ -80,7 +80,7 @@ class HomeScreen extends StatelessWidget {
                     if(controller.isLoading.value) return const TVerticalProductShimmer();
 
                     if(controller.featuredProducts.isEmpty){
-                      return Center(child: Text('No Data Found!', style: Theme.of(context).textTheme.bodyMedium));
+                      return Center(child: Text('No Data Found!!', style: Theme.of(context).textTheme.bodyMedium));
                     }
                     return TGrildLayout(itemCount: controller.featuredProducts.length, itemBuiler: (_, index) => TProductCardVertical(product: controller.featuredProducts[index],));
                   })

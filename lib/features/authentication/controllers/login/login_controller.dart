@@ -22,8 +22,8 @@ class LoginController extends GetxController {
 
   @override
   void onInit() {
-    email.text = localStorage.read('REMEMBER_ME_EMAIL');
-    password.text = localStorage.read('REMEMBER_ME_PASSWORD');
+    email.text = localStorage.read('REMEMBER_ME_EMAIL') ?? "";
+    password.text = localStorage.read('REMEMBER_ME_PASSWORD') ?? "";
     super.onInit();
   }
   //--- Email and Password SignIn
@@ -51,6 +51,7 @@ class LoginController extends GetxController {
       // Login User using Email and Password Authentication
       final userCredential = await AuthenticationRepository.instance.loginWithEmailAndPassword(email.text.trim(), password.text.trim());
       // Remove Loader
+      await userController.saveUserRecord(userCredential);
       TFullScreenLoader.stopLoading();
       // Redirect - Chuyen den trang chu
       AuthenticationRepository.instance.screenRedirect();

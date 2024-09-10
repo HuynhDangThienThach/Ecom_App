@@ -39,7 +39,7 @@ class BrandRepository extends GetxController {
       List<String> brandIds = brandCategoryQuery.docs.map((doc) => doc['brandId'] as String).toList();
 
       // Truy vấn để lấy tất cả các document có brandId nằm trong danh sách brandIds, FieldPath.documentId để truy vấn các document trong Brands mà có trùng với brandIds
-      final brandsQuery = await _db.collection('Brands').where(FieldPath.documentId, whereIn: brandIds).limit(2).get();
+      final brandsQuery = await _db.collection('Brands').where(FieldPath.documentId, whereIn: brandIds).limit(3).get();
 
       // Trích xuất tên thương hiệu hoặc dữ liệu liên quan khác từ tài liệu
       List<BrandModel> brands = brandsQuery.docs.map((doc) => BrandModel.fromSnapshot(doc)).toList();

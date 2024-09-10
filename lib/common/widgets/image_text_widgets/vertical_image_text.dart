@@ -29,32 +29,33 @@ class TVerticalImageText extends StatelessWidget {
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.only(right: TSizes.spaceBtwItems),
-        child: Column(
-          children: [
-            TCircularImage(
-              image: image,
-              fit: BoxFit.fitWidth,
-              padding: TSizes.sm * 1.4,
-              isNetworkImage: isNetworkImage,
-              backgroundColor: backgroundColor,
-              overlayColor: THelperFunctions.isDarkMode(context) ? TColors.light : TColors.dark,
-            ),
-            //--- Text
-            const SizedBox(
-              height: TSizes.spaceBtwItems / 2,
-            ),
-            SizedBox(
-                width: 55,
-                child: Text(
-                  title,
-                  style: Theme.of(context).textTheme.labelMedium!.apply(color: textColor),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                ))
-          ],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TCircularImage(
+                image: image,
+                fit: BoxFit.fitWidth,
+                padding: TSizes.sm * 1.4,
+                isNetworkImage: isNetworkImage,
+                backgroundColor: backgroundColor,
+                overlayColor: THelperFunctions.isDarkMode(context) ? TColors.light : TColors.dark,
+              ),
+              //--- Text
+              const SizedBox(
+                height: TSizes.spaceBtwItems / 4,
+              ),
+              SizedBox(
+                  width: 55,
+                  child: Text(
+                    title,
+                    style: Theme.of(context).textTheme.labelSmall!.apply(color: textColor),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ))
+            ],
+          ),
         ),
-      ),
     );
   }
 }

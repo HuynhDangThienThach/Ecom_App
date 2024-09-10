@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:t_store/features/personalization/screens/profile/profile.dart';
 import 'package:t_store/features/personalization/screens/settings/setting.dart';
 import 'package:t_store/features/shop/screens/home/home.dart';
 import 'package:t_store/utils/constants/colors.dart';
 import 'package:t_store/utils/helpers/helper_functions.dart';
-
 import 'features/shop/screens/store/store.dart';
 import 'features/shop/screens/wishlist/wishlist.dart';
 class NavigationMenu extends StatelessWidget {
@@ -40,8 +40,14 @@ class NavigationMenu extends StatelessWidget {
 }
 
 
-class NavigationController extends GetxController{
+class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
 
-  final screens = [const HomeScreen(), const StoreScreen(), const FavouriteScreen(), const SettingsScreen()];
+  // Thêm màn hình thứ 5 cho tab Profilee
+  final screens = [
+    const HomeScreen(),
+    const StoreScreen(),
+    const FavouriteScreen(),
+    const SettingsScreen(),
+  ];
 }

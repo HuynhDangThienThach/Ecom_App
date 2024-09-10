@@ -47,11 +47,11 @@ class TProductAttributes extends StatelessWidget {
                             const SizedBox(width: TSizes.spaceBtwItems/2),
                             //--- Actual Price
                             if (controller.selectedVariation.value.salePrice >0)
-                            Text('\$${controller.getVariationPrice()}', style: Theme.of(context).textTheme.titleSmall!.apply(decoration: TextDecoration.lineThrough),),
+                            Text('\$${controller.getVariationPrice()}', style: Theme.of(context).textTheme.labelSmall!.apply(decoration: TextDecoration.lineThrough),),
                             const SizedBox(width: TSizes.spaceBtwItems /1.5),
 
                             //--- Sale Price
-                            TProductPriceText(price: controller.getVariationPrice()),
+                            TProductPriceText(price: controller.getVariationPrice(), isLarge: true,),
                           ],
                         ),
                         Row(

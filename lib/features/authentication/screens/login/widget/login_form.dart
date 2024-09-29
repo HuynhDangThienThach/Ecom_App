@@ -4,6 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:t_store/features/authentication/controllers/login/login_controller.dart';
 import 'package:t_store/features/authentication/screens/password_configuration/forget_password.dart';
 import 'package:t_store/features/authentication/screens/signup/signup.dart';
+import 'package:t_store/utils/constants/image_strings.dart';
 import 'package:t_store/utils/validators/validation.dart';
 
 import '../../../../../utils/constants/sizes.dart';
@@ -32,8 +33,8 @@ class TLoginForm extends StatelessWidget {
             //--- Password
             Obx(
                   () => TextFormField(
-                validator: (value) => TValidator.validatePassword(value),
                 controller: controller.password,
+                validator: (value) => TValidator.validateEmptyText('Password',value),
                 obscureText: controller.hidePassword.value,
                 decoration: InputDecoration(
                   labelText: TTexts.password,
@@ -68,8 +69,26 @@ class TLoginForm extends StatelessWidget {
             //--- Sign In Button
             SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
-                    onPressed: () => controller.emailAndPasswordSignIn(), child: const Text(TTexts.signIn))),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 290,
+                      child: ElevatedButton(
+                          onPressed: () => controller.emailAndPasswordSignIn(), child: const Text(TTexts.signIn)),
+                    ),
+                    GestureDetector(
+                      onTap: () => controller.authenticateWithBiometrics(), // Call your authentication method here
+                      child: const Image(
+                        image: AssetImage(TImages.fingerprint),
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                )
+            ),
             const SizedBox(
               height: TSizes.spaceBtwItems,
             ),

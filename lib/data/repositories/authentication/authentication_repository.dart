@@ -59,157 +59,156 @@ class AuthenticationRepository extends GetxController {
   /* --------------------------- Email & Password sign-in --------------------------- */
 
 
-    /// [EmailAuthentication] - SignIn
-    Future<UserCredential> loginWithEmailAndPassword(String email, String password) async{
-      try{
-        return await _auth.signInWithEmailAndPassword(email: email, password: password);
-      } on FirebaseAuthException catch (e){
-        throw TFirebaseAuthException(e.code).message;
-      } on FirebaseException catch (e){
-        throw TFirebaseException(e.code).message;
-      } on FormatException catch (_){
-        throw const TFormatException();
-      } on PlatformException catch (e){
-        throw TPlatformException(e.code).message;
-      } catch (e){
-        throw 'Something went wrong. Please try again';
-      }
+  /// [EmailAuthentication] - SignIn
+  Future<UserCredential> loginWithEmailAndPassword(String email, String password) async{
+    try{
+      return await _auth.signInWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e){
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_){
+      throw const TFormatException();
+    } on PlatformException catch (e){
+      throw TPlatformException(e.code).message;
+    } catch (e){
+      throw 'Something went wrong. Please try again';
     }
-    /// [EmailAuthentication] - Register
-    Future<UserCredential> registerWithEmailAndPassword(String email, String password) async{
-      try{
-        return await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      } on FirebaseAuthException catch (e){
-        throw TFirebaseAuthException(e.code).message;
-      } on FirebaseException catch (e){
-        throw TFirebaseException(e.code).message;
-      } on FormatException catch (_){
-        throw const TFormatException();
-      } on PlatformException catch (e){
-        throw TPlatformException(e.code).message;
-      } catch (e){
-        throw 'Something went wrong. Please try again';
-      }
+  }
+  /// [EmailAuthentication] - Register
+  Future<UserCredential> registerWithEmailAndPassword(String email, String password) async{
+    try{
+      return await _auth.createUserWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e){
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_){
+      throw const TFormatException();
+    } on PlatformException catch (e){
+      throw TPlatformException(e.code).message;
+    } catch (e){
+      throw 'Something went wrong. Please try again';
     }
+  }
 
-    /// [EmailVerification] - Mail Verification
-    Future<void> sendEmailVerification() async{
-      try{
-        await _auth.currentUser?.sendEmailVerification();
-      }on FirebaseAuthException catch (e){
-        throw TFirebaseAuthException(e.code).message;
-      } on FirebaseException catch (e){
-        throw TFirebaseException(e.code).message;
-      } on FormatException catch (_){
-        throw const TFormatException();
-      } on PlatformException catch (e){
-        throw TPlatformException(e.code).message;
-      } catch (e){
-        throw 'Something went wrong. Please try again';
-      }
+  /// [EmailVerification] - Mail Verification
+  Future<void> sendEmailVerification() async{
+    try{
+      await _auth.currentUser?.sendEmailVerification();
+    }on FirebaseAuthException catch (e){
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_){
+      throw const TFormatException();
+    } on PlatformException catch (e){
+      throw TPlatformException(e.code).message;
+    } catch (e){
+      throw 'Something went wrong. Please try again';
     }
+  }
 
-    ///[EmailAuthentication] - Forget Password.
-    Future<void> sendPasswordResetEmail(String email) async{
-      try{
-        await _auth.sendPasswordResetEmail(email: email);
-      }on FirebaseAuthException catch (e){
-        throw TFirebaseAuthException(e.code).message;
-      } on FirebaseException catch (e){
-        throw TFirebaseException(e.code).message;
-      } on FormatException catch (_){
-        throw const TFormatException();
-      } on PlatformException catch (e){
-        throw TPlatformException(e.code).message;
-      } catch (e){
-        throw 'Something went wrong. Please try again';
-      }
+  ///[EmailAuthentication] - Forget Password.
+  Future<void> sendPasswordResetEmail(String email) async{
+    try{
+      await _auth.sendPasswordResetEmail(email: email);
+    }on FirebaseAuthException catch (e){
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_){
+      throw const TFormatException();
+    } on PlatformException catch (e){
+      throw TPlatformException(e.code).message;
+    } catch (e){
+      throw 'Something went wrong. Please try again';
     }
+  }
 
-    ///[ReAuthenticate] - ReAuthenticate User.
-    Future<void> reAuthenticateWithEmailAndPassword(String email, String password) async{
-      try{
-        // Create a credential
-        AuthCredential credential = EmailAuthProvider.credential(email: email, password: password);
+  ///[ReAuthenticate] - ReAuthenticate User.
+  Future<void> reAuthenticateWithEmailAndPassword(String email, String password) async{
+    try{
+      // Create a credential
+      AuthCredential credential = EmailAuthProvider.credential(email: email, password: password);
 
-        // ReAuthenticate
-        await _auth.currentUser!.reauthenticateWithCredential(credential);
-      }on FirebaseAuthException catch (e){
-        throw TFirebaseAuthException(e.code).message;
-      } on FirebaseException catch (e){
-        throw TFirebaseException(e.code).message;
-      } on FormatException catch (_){
-        throw const TFormatException();
-      } on PlatformException catch (e){
-        throw TPlatformException(e.code).message;
-      } catch (e){
-        throw 'Something went wrong. Please try again';
-      }
+      // ReAuthenticate
+      await _auth.currentUser!.reauthenticateWithCredential(credential);
+    }on FirebaseAuthException catch (e){
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_){
+      throw const TFormatException();
+    } on PlatformException catch (e){
+      throw TPlatformException(e.code).message;
+    } catch (e){
+      throw 'Something went wrong. Please try again';
     }
+  }
 
 
   /*---------------------- Federated identity & social sign-in ----------------------*/
-    ///[GoogleAuthentication] - Google.
-    Future<UserCredential?> signInWithGoogle() async{
-      try{
-        // Trigger the authentication flow
-        final GoogleSignInAccount? userAccount = await GoogleSignIn().signIn();
-        // Obtain the auth details from the request
-        final GoogleSignInAuthentication? googleAuth = await userAccount?.authentication;
-        // Create a new credential to save authentication
-        final credentials = GoogleAuthProvider.credential(accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
-        // Once signed in, return the UserCredential
-        return await _auth.signInWithCredential(credentials);
-      }on FirebaseAuthException catch (e){
-        throw TFirebaseAuthException(e.code).message;
-      } on FirebaseException catch (e){
-        throw TFirebaseException(e.code).message;
-      } on FormatException catch (_){
-        throw const TFormatException();
-      } on PlatformException catch (e){
-        throw TPlatformException(e.code).message;
-      } catch (e){
-        if (kDebugMode) print('Something went wrong. $e');
-        return null;
-      }
+  ///[GoogleAuthentication] - Google.
+  Future<UserCredential?> signInWithGoogle() async{
+    try{
+      // Trigger the authentication flow
+      final GoogleSignInAccount? userAccount = await GoogleSignIn().signIn();
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth = await userAccount?.authentication;
+      // Create a new credential to save authentication
+      final credentials = GoogleAuthProvider.credential(accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
+      // Once signed in, return the UserCredential
+      return await _auth.signInWithCredential(credentials);
+    }on FirebaseAuthException catch (e){
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_){
+      throw const TFormatException();
+    } on PlatformException catch (e){
+      throw TPlatformException(e.code).message;
+    } catch (e){
+      if (kDebugMode) print('Something went wrong. $e');
+      return null;
     }
-    ///[FacebookAuthentication] - Facebook.
-
+  }
+  ///[FacebookAuthentication] - Facebook.
 
   /*---------------------- ./end Federated identity & social sign-in ----------------------*/
-    ///[LogoutUser] - Valid for any authentication.
-    Future<void> logout() async{
-      try{
-        await GoogleSignIn().signOut();
-        await FirebaseAuth.instance.signOut();
-        Get.offAll(() => const LoginScreen());
-      }on FirebaseAuthException catch (e){
-        throw TFirebaseAuthException(e.code).message;
-      } on FirebaseException catch (e){
-        throw TFirebaseException(e.code).message;
-      } on FormatException catch (_){
-        throw const TFormatException();
-      } on PlatformException catch (e){
-        throw TPlatformException(e.code).message;
-      } catch (e){
-        throw 'Something went wrong. Please try again';
-      }
+  ///[LogoutUser] - Valid for any authentication.
+  Future<void> logout() async{
+    try{
+      await GoogleSignIn().signOut();
+      await FirebaseAuth.instance.signOut();
+      Get.offAll(() => const LoginScreen());
+    }on FirebaseAuthException catch (e){
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_){
+      throw const TFormatException();
+    } on PlatformException catch (e){
+      throw TPlatformException(e.code).message;
+    } catch (e){
+      throw 'Something went wrong. Please try again';
     }
-    ///[DeleteUser] - Remove user Auth and Firestore Account.
-    Future<void> deleteAccount() async{
-      try{
-        await UserRepository.instance.removeUserRecord(_auth.currentUser!.uid);
-        await _auth.currentUser?.delete();
-      }on FirebaseAuthException catch (e){
-        throw TFirebaseAuthException(e.code).message;
-      } on FirebaseException catch (e){
-        throw TFirebaseException(e.code).message;
-      } on FormatException catch (_){
-        throw const TFormatException();
-      } on PlatformException catch (e){
-        throw TPlatformException(e.code).message;
-      } catch (e){
-        throw 'Something went wrong. Please try again';
-      }
+  }
+  ///[DeleteUser] - Remove user Auth and Firestore Account.
+  Future<void> deleteAccount() async{
+    try{
+      await UserRepository.instance.removeUserRecord(_auth.currentUser!.uid);
+      await _auth.currentUser?.delete();
+    }on FirebaseAuthException catch (e){
+      throw TFirebaseAuthException(e.code).message;
+    } on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    } on FormatException catch (_){
+      throw const TFormatException();
+    } on PlatformException catch (e){
+      throw TPlatformException(e.code).message;
+    } catch (e){
+      throw 'Something went wrong. Please try again';
     }
+  }
 }

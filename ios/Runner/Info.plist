@@ -49,5 +49,7 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSFaceIDUsageDescription</key>
+        <string>This app uses Face ID to provide secure authentication</string>
 	</dict>
 </plist>

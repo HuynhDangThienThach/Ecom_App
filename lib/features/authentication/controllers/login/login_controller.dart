@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:t_store/features/personalization/controllers/user_controller.dart';
 import 'package:t_store/utils/popups/full_screen_load.dart';
 
@@ -8,7 +10,11 @@ import '../../../../data/repositories/authentication/authentication_repository.d
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/helpers/network_manager.dart';
 import '../../../../utils/popups/loaders.dart';
-
+enum SupportState {
+  unknown,
+  supported,
+  unSupported,
+}
 class LoginController extends GetxController {
 
   //--- Variables
@@ -20,12 +26,64 @@ class LoginController extends GetxController {
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   final userController = Get.put(UserController());
 
+  // Biometric authentication variables
+  final LocalAuthentication auth = LocalAuthentication();
+  SupportState supportState = SupportState.unknown;
+  List<BiometricType>? availableBiometrics;
+
+
+
   @override
   void onInit() {
-    email.text = localStorage.read('REMEMBER_ME_EMAIL') ?? "";
-    password.text = localStorage.read('REMEMBER_ME_PASSWORD') ?? "";
+    email.text = localStorage.read('REMEMBER_ME_EMAIL');
+    password.text = localStorage.read('REMEMBER_ME_PASSWORD');
+    checkBiometricSupport();
     super.onInit();
   }
+
+
+
+
+
+  Future<void> checkBiometricSupport() async {
+    final isSupported = await auth.isDeviceSupported();
+    supportState = isSupported ? SupportState.supported : SupportState.unSupported;
+    if (supportState == SupportState.supported) {
+      await getAvailableBiometrics();
+    }
+  }
+
+  Future<void> getAvailableBiometrics() async {
+    try {
+      availableBiometrics = await auth.getAvailableBiometrics();
+    } on PlatformException catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> authenticateWithBiometrics() async {
+    try {
+      final authenticated = await auth.authenticate(
+        localizedReason: 'Authenticate with fingerprint or Face ID',
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+          biometricOnly: true,
+        ),
+      );
+
+      if (authenticated) {
+
+        }
+    } on PlatformException catch (e) {
+      print(e);
+      TLoaders.errorSnackBar(
+        title: 'Authentication Error',
+        message: 'Biometric authentication failed. Please try again.',
+      );
+    }
+  }
+
+
   //--- Email and Password SignIn
   Future<void> emailAndPasswordSignIn() async{
     try{
@@ -50,14 +108,14 @@ class LoginController extends GetxController {
       }
       // Login User using Email and Password Authentication
       final userCredential = await AuthenticationRepository.instance.loginWithEmailAndPassword(email.text.trim(), password.text.trim());
+
       // Remove Loader
-      await userController.saveUserRecord(userCredential);
       TFullScreenLoader.stopLoading();
       // Redirect - Chuyen den trang chu
       AuthenticationRepository.instance.screenRedirect();
-    } catch(e){
+    } catch (e) {
       TFullScreenLoader.stopLoading();
-      TLoaders.errorSnackBar(title: 'Oh Snap', message: e.toString());
+        TLoaders.errorSnackBar(title: 'Oh Snap', message: e.toString());
     }
   }
 

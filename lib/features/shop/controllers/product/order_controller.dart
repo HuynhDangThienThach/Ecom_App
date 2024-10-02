@@ -28,7 +28,7 @@ class OrderController extends GetxController {
       final userOrders = await orderRepository.fetchUserOrders();
       return userOrders;
     } catch(e){
-      TLoaders.warningSnackBar(title: 'Oh Snap!', message: e.toString());
+      TLoaders.warningSnackBar(title: 'Chà, thật đáng tiếc!', message: e.toString());
       return [];
     }
   }
@@ -38,7 +38,7 @@ class OrderController extends GetxController {
     try {
       TFullScreenLoader.openLoadingDialog('Processing your order', TImages.pencilAnimation);
 
-      final userId = AuthenticationRepository.instance.authUser.uid;
+      final userId = AuthenticationRepository.instance.authUser!.uid;
       if (userId.isEmpty) return;
 
       final order = OrderModel(
@@ -66,7 +66,7 @@ class OrderController extends GetxController {
       ));
 
     } catch (e) {
-      TLoaders.errorSnackBar(title: 'Oh Snap', message: e.toString());
+      TLoaders.errorSnackBar(title: 'Chà, thật đáng tiếc!', message: e.toString());
     }
   }
 }

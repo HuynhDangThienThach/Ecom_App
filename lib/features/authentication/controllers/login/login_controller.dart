@@ -5,11 +5,12 @@ import 'package:get_storage/get_storage.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:t_store/features/personalization/controllers/user_controller.dart';
 import 'package:t_store/utils/popups/full_screen_load.dart';
-
 import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/helpers/network_manager.dart';
 import '../../../../utils/popups/loaders.dart';
+
+
 enum SupportState {
   unknown,
   supported,
@@ -26,23 +27,20 @@ class LoginController extends GetxController {
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   final userController = Get.put(UserController());
 
+
+
   // Biometric authentication variables
   final LocalAuthentication auth = LocalAuthentication();
   SupportState supportState = SupportState.unknown;
   List<BiometricType>? availableBiometrics;
 
-
-
   @override
   void onInit() {
-    email.text = localStorage.read('REMEMBER_ME_EMAIL');
-    password.text = localStorage.read('REMEMBER_ME_PASSWORD');
+    email.text = localStorage.read('REMEMBER_ME_EMAIL') ?? '';
+    password.text = localStorage.read('REMEMBER_ME_PASSWORD') ?? '';
     checkBiometricSupport();
     super.onInit();
   }
-
-
-
 
 
   Future<void> checkBiometricSupport() async {
@@ -64,7 +62,7 @@ class LoginController extends GetxController {
   Future<void> authenticateWithBiometrics() async {
     try {
       final authenticated = await auth.authenticate(
-        localizedReason: 'Authenticate with fingerprint or Face ID',
+        localizedReason: 'Xác thực bằng vân tay hoặc Face ID',
         options: const AuthenticationOptions(
           stickyAuth: true,
           biometricOnly: true,
@@ -72,7 +70,7 @@ class LoginController extends GetxController {
       );
 
       if (authenticated) {
-
+        googleSignIn();
         }
     } on PlatformException catch (e) {
       print(e);
@@ -108,14 +106,13 @@ class LoginController extends GetxController {
       }
       // Login User using Email and Password Authentication
       final userCredential = await AuthenticationRepository.instance.loginWithEmailAndPassword(email.text.trim(), password.text.trim());
-
       // Remove Loader
       TFullScreenLoader.stopLoading();
       // Redirect - Chuyen den trang chu
       AuthenticationRepository.instance.screenRedirect();
-    } catch (e) {
+    } catch(e){
       TFullScreenLoader.stopLoading();
-        TLoaders.errorSnackBar(title: 'Oh Snap', message: e.toString());
+      TLoaders.errorSnackBar(title: 'Chà, thật đáng tiếc!', message: e.toString());
     }
   }
 
@@ -143,7 +140,7 @@ class LoginController extends GetxController {
       AuthenticationRepository.instance.screenRedirect();
 
     }catch(e){
-      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+      TLoaders.errorSnackBar(title: 'Chà, thật đáng tiếc!', message: e.toString());
     }
   }
 }

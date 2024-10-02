@@ -16,15 +16,15 @@ class AddressModel {
 
   AddressModel(
       {required this.phoneNumber,
-      required this.street,
-      required this.city,
-      required this.state,
-      required this.postalCode,
-      required this.country,
-      this.dateTime,
-      required this.id,
-      required this.name,
-      this.selectedAddress = true});
+        required this.street,
+        required this.city,
+        required this.state,
+        required this.postalCode,
+        required this.country,
+        this.dateTime,
+        required this.id,
+        required this.name,
+        this.selectedAddress = true});
 
   String get formattedPhoneNo => TFormatter.formatPhoneNumber(phoneNumber);
 

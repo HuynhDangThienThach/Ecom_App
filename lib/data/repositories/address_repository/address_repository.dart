@@ -12,7 +12,7 @@ class AddressRepository extends GetxController {
   //--- Functions
   Future<List<AddressModel>> fetchUserAddress() async {
     try{
-      final userId = AuthenticationRepository.instance.authUser.uid;
+      final userId = AuthenticationRepository.instance.authUser!.uid;
       if(userId.isEmpty) throw 'Unable to find user information. Try again in few minutes';
 
       final result = await _db.collection('Users').doc(userId).collection('Addresses').get();
@@ -25,7 +25,7 @@ class AddressRepository extends GetxController {
   // Clear the "selected" field for all address
   Future<void> updateSelectedField(String addressId, bool selected) async{
     try{
-      final userId = AuthenticationRepository.instance.authUser.uid;
+      final userId = AuthenticationRepository.instance.authUser!.uid;
       await _db.collection("Users").doc(userId).collection("Addresses").doc(addressId).update({"SelectedAddress": selected});
     } catch (e){
       throw "Unable to update your address selection. Try again later";
@@ -35,7 +35,7 @@ class AddressRepository extends GetxController {
   // Store new address
   Future<String> addAddress(AddressModel address) async{
     try{
-      final userId = AuthenticationRepository.instance.authUser.uid;
+      final userId = AuthenticationRepository.instance.authUser!.uid;
       final currentAddress = await _db.collection("Users").doc(userId).collection("Addresses").add(address.toJson());
       return currentAddress.id;
     }catch (e){
@@ -46,7 +46,7 @@ class AddressRepository extends GetxController {
   // Delete Address
   Future<void> deleteAddresses(String addressId) async{
     try{
-      final userId = AuthenticationRepository.instance.authUser.uid;
+      final userId = AuthenticationRepository.instance.authUser!.uid;
       final deleteAddress = await _db.collection("Users").doc(userId).collection("Addresses").doc(addressId).delete();
     }catch(e){
       throw 'Error deleting address: $e';

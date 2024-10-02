@@ -5,6 +5,7 @@ import 'package:t_store/common/widgets/appbar/appbar.dart';
 import 'package:t_store/common/widgets/custom_shapes/containers/primary_header_container.dart';
 import 'package:t_store/common/widgets/list_titles/settings_menu_title.dart';
 import 'package:t_store/common/widgets/texts/section_heading.dart';
+import 'package:t_store/features/map/screen/map_page.dart';
 import 'package:t_store/features/personalization/screens/address/address.dart';
 import 'package:t_store/features/personalization/screens/profile/profile.dart';
 import 'package:t_store/features/shop/screens/cart/cart.dart';
@@ -46,6 +47,7 @@ class SettingsScreen extends StatelessWidget {
 
                 TSettingMenuTitle(icon: Iconsax.safe_home, title: 'My Addresses', subTitle: 'Set shopping delivery address', onTap: () => Get.to(() => const UserAddressScreen()),),
                 TSettingMenuTitle(icon: Iconsax.shopping_cart, title: 'My Cart', subTitle: 'Add, remove products and move to checkout', onTap: () => Get.to(() => const CartScreen()),),
+                TSettingMenuTitle(icon: Iconsax.location, title: 'Location', subTitle: 'Determine by exact coordinates on the map.', onTap: () => Get.to(() => const Map_Page()),),
                 TSettingMenuTitle(icon: Iconsax.bag_tick, title: 'My Orders', subTitle: 'In-progress and Completed Orders', onTap: () => Get.to(() => const OrderScreen()),),
                 const TSettingMenuTitle(icon: Iconsax.bank, title: 'Bank Account', subTitle: 'Withdraw balance to registered bank account'),
                 const TSettingMenuTitle(icon: Iconsax.discount_shape, title: 'My Coupons', subTitle: 'List of all the discounted coupons'),

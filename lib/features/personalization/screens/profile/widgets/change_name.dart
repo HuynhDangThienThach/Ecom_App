@@ -21,44 +21,44 @@ class ChangeName extends StatelessWidget {
         title: Text('Change Name', style: Theme.of(context).textTheme.headlineSmall,),
       ),
       body: Padding(
-          padding: const EdgeInsets.all(TSizes.defaultSpace),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /// Headings
-              Text('Use real name for easy verification. This name will appear on severval pages.', style: Theme.of(context).textTheme.labelMedium,),
-              const SizedBox(height: TSizes.spaceBtwSections),
+        padding: const EdgeInsets.all(TSizes.defaultSpace),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /// Headings
+            Text('Use real name for easy verification. This name will appear on severval pages.', style: Theme.of(context).textTheme.labelMedium,),
+            const SizedBox(height: TSizes.spaceBtwSections),
 
-              /// Text field and button
-              Form(
-                  key: controller.updateUserNameFormKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: controller.firstName,
-                        validator: (value) => TValidator.validateEmptyText('First name', value),
-                        expands: false,
-                        decoration: const InputDecoration(labelText: TTexts.firstName, prefixIcon: Icon(Iconsax.user)),
-                      ),
-                      const SizedBox(height: TSizes.spaceBtwInputFields,),
-                      TextFormField(
-                        controller: controller.lastName,
-                        validator: (value) => TValidator.validateEmptyText('Last Name', value),
-                        expands: false,
-                        decoration: const InputDecoration(labelText: TTexts.lastName, prefixIcon: Icon(Iconsax.user)),
-                      )
-                    ],
-                  )
-              ),
-              const SizedBox(height: TSizes.spaceBtwSections),
+            /// Text field and button
+            Form(
+                key: controller.updateUserNameFormKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: controller.firstName,
+                      validator: (value) => TValidator.validateEmptyText('First name', value),
+                      expands: false,
+                      decoration: const InputDecoration(labelText: TTexts.firstName, prefixIcon: Icon(Iconsax.user)),
+                    ),
+                    const SizedBox(height: TSizes.spaceBtwInputFields,),
+                    TextFormField(
+                      controller: controller.lastName,
+                      validator: (value) => TValidator.validateEmptyText('Last Name', value),
+                      expands: false,
+                      decoration: const InputDecoration(labelText: TTexts.lastName, prefixIcon: Icon(Iconsax.user)),
+                    )
+                  ],
+                )
+            ),
+            const SizedBox(height: TSizes.spaceBtwSections),
 
-              /// Save Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(onPressed: () => controller.updateUserName(), child: const Text('Save'),),
-              )
-            ],
-          ),
+            /// Save Button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(onPressed: () => controller.updateUserName(), child: const Text('Save'),),
+            )
+          ],
+        ),
       ),
     );
   }

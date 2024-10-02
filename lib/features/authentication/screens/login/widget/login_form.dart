@@ -5,6 +5,7 @@ import 'package:t_store/features/authentication/controllers/login/login_controll
 import 'package:t_store/features/authentication/screens/password_configuration/forget_password.dart';
 import 'package:t_store/features/authentication/screens/signup/signup.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
+import 'package:t_store/utils/helpers/helper_functions.dart';
 import 'package:t_store/utils/validators/validation.dart';
 
 import '../../../../../utils/constants/sizes.dart';
@@ -18,6 +19,7 @@ class TLoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(LoginController());
+    final dark = THelperFunctions.isDarkMode(context);
     return Form(
       key: controller.loginFormKey,
       child: Padding(
@@ -28,7 +30,7 @@ class TLoginForm extends StatelessWidget {
             TextFormField(
               controller: controller.email,
               validator: (value) => TValidator.validateEmail(value),
-              decoration: const InputDecoration(prefixIcon: Icon(Iconsax.direct_right), labelText: TTexts.email),),
+              decoration: const InputDecoration(prefixIcon: Icon(Iconsax.direct), labelText: TTexts.email),),
             const SizedBox(height: TSizes.spaceBtwInputFields,),
             //--- Password
             Obx(
@@ -79,8 +81,8 @@ class TLoginForm extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () => controller.authenticateWithBiometrics(), // Call your authentication method here
-                      child: const Image(
-                        image: AssetImage(TImages.fingerprint),
+                      child:  Image(
+                        image: AssetImage(dark ? TImages.whiteFingerprint : TImages.darkFingerprint),
                         width: 50,
                         height: 50,
                         fit: BoxFit.cover,

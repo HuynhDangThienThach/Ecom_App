@@ -20,7 +20,7 @@ class SignupScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               //--- Title
-              Text(TTexts.signupTitle, style: Theme.of(context).textTheme.headlineSmall,),
+              Text(TTexts.signupTitle, style: Theme.of(context).textTheme.headlineMedium,),
               const SizedBox(height: TSizes.spaceBtwSections),
               //--- Form
               const TSignupForm(),
@@ -37,5 +37,3 @@ class SignupScreen extends StatelessWidget {
     );
   }
 }
-
-

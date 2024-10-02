@@ -16,7 +16,7 @@ class SignupController extends GetxController{
 
   //--- Variables
   final hidePassword = true.obs;
-  final privacyPolicy = true.obs;
+  final privacyPolicy = false.obs;
   final email = TextEditingController();
   final lastName = TextEditingController();
   final userName = TextEditingController();
@@ -29,7 +29,7 @@ class SignupController extends GetxController{
   void signup() async{
     try {
       //--- Start Loading
-      TFullScreenLoader.openLoadingDialog('We are processing your information...', TImages.docerAnimation);
+      TFullScreenLoader.openLoadingDialog('Chúng tôi đang xử lý thông tin của bạn...', TImages.docerAnimation);
 
       //--- Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
@@ -45,8 +45,8 @@ class SignupController extends GetxController{
       //--- Primary Policy Check
       if(!privacyPolicy.value){
         TLoaders.warningSnackBar(
-          title: 'Accept Privacy Policy',
-          message: 'In order to create account, you must have to read and accept the Privacy Policy & Terms of Use.',
+          title: 'Chấp nhận chính sách bảo mật',
+          message: 'Để tạo tài khoản, bạn phải đọc và chấp nhận Chính sách bảo mật & Điều khoản sử dụng.',
         );
         return;
       }
@@ -68,14 +68,14 @@ class SignupController extends GetxController{
       //--- Remove Loader
       TFullScreenLoader.stopLoading();
       //--- Save Success Message
-      TLoaders.successSnackBar(title: 'Congratulations', message: 'Your account has been created! Verify email to continue.');
+      TLoaders.successSnackBar(title: 'Chúc mừng', message: 'Tài khoản của bạn đã được tạo! Xác minh email để tiếp tục.');
       //--- Move to Verify Email Screen
       Get.to(() => VerifyEmailScreen(email: email.text.trim(),));
     } catch (e){
       //--- Remove Loader
       TFullScreenLoader.stopLoading();
       //--- Show some Generic Error to the user
-      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+      TLoaders.errorSnackBar(title: 'Chà, thật đáng tiếc!', message: e.toString());
     }
   }
 }

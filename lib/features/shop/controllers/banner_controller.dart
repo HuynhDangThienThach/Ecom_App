@@ -35,7 +35,7 @@ class BannerController extends GetxController {
       // Gán vào BannerModel
       this.banners.assignAll(banners);
     }catch (e){
-      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+      TLoaders.errorSnackBar(title: 'Chà, thật đáng tiếc!', message: e.toString());
     } finally {
       // Remove Loader
       isLoading.value = false;

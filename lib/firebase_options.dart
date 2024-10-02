@@ -47,30 +47,30 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDlPD0BBzoR69mTw1Ea7vJa3nrKTHX13XE',
-    appId: '1:411647451440:web:95bd33bacf91f4ddbda8f5',
-    messagingSenderId: '411647451440',
-    projectId: 'ecommerceapp-b5f5c',
-    authDomain: 'ecommerceapp-b5f5c.firebaseapp.com',
-    storageBucket: 'ecommerceapp-b5f5c.appspot.com',
+    apiKey: 'AIzaSyAjtBQredrfChPq3F28tTRqo4GRafCQgKQ',
+    appId: '1:916093930011:web:0d611a9d3948d3092c06be',
+    messagingSenderId: '916093930011',
+    projectId: 'ecommerceapp-fa088',
+    authDomain: 'ecommerceapp-fa088.firebaseapp.com',
+    storageBucket: 'ecommerceapp-fa088.appspot.com',
+    measurementId: 'G-74SEEDRW3V',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDdUsKlDuzh27jfUE5lsvSa-3jNU2RzDFE',
-    appId: '1:411647451440:android:69a11565bd88adecbda8f5',
-    messagingSenderId: '411647451440',
-    projectId: 'ecommerceapp-b5f5c',
-    storageBucket: 'ecommerceapp-b5f5c.appspot.com',
+    apiKey: 'AIzaSyBud94jUI-kslDKj461ab4BMO-N_KV8_s0',
+    appId: '1:916093930011:android:4d0986ff14b4ab612c06be',
+    messagingSenderId: '916093930011',
+    projectId: 'ecommerceapp-fa088',
+    storageBucket: 'ecommerceapp-fa088.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDaHMlehQSUI8bPIKcFVl6BeiqnNKlVQY8',
-    appId: '1:411647451440:ios:18ce3bac0fd83527bda8f5',
-    messagingSenderId: '411647451440',
-    projectId: 'ecommerceapp-b5f5c',
-    storageBucket: 'ecommerceapp-b5f5c.appspot.com',
-    androidClientId: '411647451440-sdpe4vah25dl9bmang45n1q55vbp8eo7.apps.googleusercontent.com',
-    iosClientId: '411647451440-51e9a00r6ra3597sh2vsmi8nsd5oj864.apps.googleusercontent.com',
+    apiKey: 'AIzaSyAIKe5dwXEeLlLKO8CU88D-90P3aLZ007k',
+    appId: '1:916093930011:ios:e6ee135581961dfd2c06be',
+    messagingSenderId: '916093930011',
+    projectId: 'ecommerceapp-fa088',
+    storageBucket: 'ecommerceapp-fa088.appspot.com',
+    iosClientId: '916093930011-6kh6dsc0n6mt9j0rdmjsijg917kqqmg4.apps.googleusercontent.com',
     iosBundleId: 'com.example.tStore',
   );
 

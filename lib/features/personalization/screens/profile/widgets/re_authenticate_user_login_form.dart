@@ -37,12 +37,12 @@ class ReAuthLoginForm extends StatelessWidget {
                   controller: controller.verifyPassword,
                   validator: (value) => TValidator.validateEmptyText('Password', value),
                   decoration: InputDecoration(
-                    labelText: TTexts.password,
-                    prefixIcon: const Icon(Iconsax.password_check),
-                    suffixIcon: IconButton(
-                      onPressed: () => controller.hidePassword.value = !controller.hidePassword.value,
-                      icon: Icon(controller.hidePassword.value ? Iconsax.eye_slash : Iconsax.eye),
-                    )
+                      labelText: TTexts.password,
+                      prefixIcon: const Icon(Iconsax.password_check),
+                      suffixIcon: IconButton(
+                        onPressed: () => controller.hidePassword.value = !controller.hidePassword.value,
+                        icon: Icon(controller.hidePassword.value ? Iconsax.eye_slash : Iconsax.eye),
+                      )
                   ),
                 )),
                 const SizedBox(height: TSizes.spaceBtwSections),

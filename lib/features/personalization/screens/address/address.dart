@@ -22,24 +22,24 @@ class UserAddressScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(TSizes.defaultSpace),
           child: Obx(
-            () => FutureBuilder(
+                () => FutureBuilder(
               // Use key to trigger refresh
-              key: Key(controller.refreshData.value.toString()),
-              future: controller.getAllUserAddress(),
-              builder: (context, snapshot) {
-                final response = TCloudHelperFunctions.checkMultiRecordState(snapshot: snapshot);
-                if (response != null) return response;
-                final addresses = snapshot.data!;
+                key: Key(controller.refreshData.value.toString()),
+                future: controller.getAllUserAddress(),
+                builder: (context, snapshot) {
+                  final response = TCloudHelperFunctions.checkMultiRecordState(snapshot: snapshot);
+                  if (response != null) return response;
+                  final addresses = snapshot.data!;
 
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: addresses.length,
-                  itemBuilder: (_, index) => TSingleAddress(
-                    address: addresses[index],
-                    onTap: () => controller.selectAddress(addresses[index])
-                  ),
-                );
-              }
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: addresses.length,
+                    itemBuilder: (_, index) => TSingleAddress(
+                        address: addresses[index],
+                        onTap: () => controller.selectAddress(addresses[index])
+                    ),
+                  );
+                }
             ),
           ),
         ),

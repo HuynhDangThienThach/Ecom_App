@@ -35,7 +35,7 @@ class UserRepository extends GetxController{
   /// Function to fetch user details base on user ID. (Lấy bản ghi chi tiết)
   Future<UserModel> fetchUserDetails() async{
     try{
-      final documentSnapshot = await _db.collection("Users").doc(AuthenticationRepository.instance.authUser.uid).get();
+      final documentSnapshot = await _db.collection("Users").doc(AuthenticationRepository.instance.authUser?.uid).get();
       if(documentSnapshot.exists){
         return UserModel.fromSnapshot(documentSnapshot);
       }else {
@@ -70,7 +70,7 @@ class UserRepository extends GetxController{
   /// Update any field in specific User Collection
   Future<void> updateSingleField(Map<String, dynamic> json) async{
     try{
-      await _db.collection("Users").doc(AuthenticationRepository.instance.authUser.uid).update(json);
+      await _db.collection("Users").doc(AuthenticationRepository.instance.authUser?.uid).update(json);
     } on FirebaseException catch (e){
       throw TFirebaseException(e.code).message;
     } on FormatException catch (_){
@@ -105,13 +105,13 @@ class UserRepository extends GetxController{
       final url = await ref.getDownloadURL();
       return url;
     } on FirebaseException catch (e){
-    throw TFirebaseException(e.code).message;
+      throw TFirebaseException(e.code).message;
     } on FormatException catch (_){
-    throw const TFormatException();
+      throw const TFormatException();
     } on PlatformException catch (e){
-    throw TPlatformException(e.code).message;
+      throw TPlatformException(e.code).message;
     } catch (e){
-    throw 'Something went wrong. Please try again';
+      throw 'Something went wrong. Please try again';
     }
   }
 }

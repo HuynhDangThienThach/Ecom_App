@@ -33,7 +33,7 @@ class CategoryController extends GetxController {
       // Bộ lọc các loại hàng đặt trưng
       featuredCategories.assignAll(allCategories.where((category) => category.isFeatured && category.parentId.isEmpty).take(7).toList());
     }catch (e){
-      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+      TLoaders.errorSnackBar(title: 'Chà, thật đáng tiếc!', message: e.toString());
   } finally {
       // Remove Loader
       isLoading.value = false;
@@ -46,7 +46,7 @@ class CategoryController extends GetxController {
       final subCategories = await _categoryRepository.getSubCategories(categoryId);
       return subCategories;
     }catch(e){
-      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+      TLoaders.errorSnackBar(title: 'Chà, thật đáng tiếc!', message: e.toString());
       return [];
     }
   }

@@ -28,12 +28,17 @@ class THomeAppBar extends StatelessWidget {
                 .apply(color: TColors.grey),
           ),
           Obx(() {
-            if(controller.profileLoading.value){
-              return const TShimmerEffect(width: 80, height: 15,);
+            if (controller.profileLoading.value) {
+              return const TShimmerEffect(width: 80, height: 15);
             } else {
-              return Text(controller.user.value.fullName, style: Theme.of(context).textTheme.headlineSmall!.apply(color: TColors.white));
+              print("Full Name: ${controller.user.value.fullName}"); // In ra để kiểm tra
+              return Text(
+                controller.user.value.fullName.isNotEmpty ? "ThienThachDT": controller.user.value.fullName ,
+                style: Theme.of(context).textTheme.headlineSmall!.apply(color: TColors.white),
+              );
             }
           }),
+
         ],
       ),
       action: const [

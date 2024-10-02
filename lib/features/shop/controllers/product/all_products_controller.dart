@@ -23,7 +23,7 @@ class AllProductsController extends GetxController {
 
       return products;
     } catch(e){
-      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+      TLoaders.errorSnackBar(title: 'Chà, thật đáng tiếc!', message: e.toString());
       return [];
     }
   }
@@ -59,7 +59,7 @@ class AllProductsController extends GetxController {
         products.sort((a, b) => b.stock.compareTo(a.stock));
         break;
       default:
-        // Default sorting option: Name
+      // Default sorting option: Name
         products.sort((a, b) => a.title.compareTo(b.title));
     }
   }

@@ -68,7 +68,7 @@ class UpdateNameController extends GetxController {
       Get.off(() => const ProfileScreen());
     } catch (e){
       TFullScreenLoader.stopLoading();
-      TLoaders.errorSnackBar(title: 'Oh Snap!', message: e.toString());
+      TLoaders.errorSnackBar(title: 'Chà, thật đáng tiếc!', message: e.toString());
     }
   }
 

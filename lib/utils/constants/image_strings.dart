@@ -11,7 +11,8 @@ class TImages {
   // -- Social Logos
   static const String google = "assets/logos/google-icon.png";
   static const String facebook = "assets/logos/facebook-icon.png";
-  static const String fingerprint = "assets/logos/fingerprint-identification.png";
+  static const String whiteFingerprint = "assets/logos/DVTW.png";
+  static const String darkFingerprint = "assets/logos/DVTB.png";
 
   // -- Category Icons
   static const String sportIcon = "assets/icons/categories/icons8-bowling-64.png";

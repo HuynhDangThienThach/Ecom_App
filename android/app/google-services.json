@@ -1,45 +1,37 @@
 {
   "project_info": {
-    "project_number": "411647451440",
-    "project_id": "ecommerceapp-b5f5c",
-    "storage_bucket": "ecommerceapp-b5f5c.appspot.com"
+    "project_number": "916093930011",
+    "project_id": "ecommerceapp-fa088",
+    "storage_bucket": "ecommerceapp-fa088.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:411647451440:android:69a11565bd88adecbda8f5",
+        "mobilesdk_app_id": "1:916093930011:android:4d0986ff14b4ab612c06be",
         "android_client_info": {
           "package_name": "com.example.t_store"
         }
       },
       "oauth_client": [
         {
-          "client_id": "411647451440-sdpe4vah25dl9bmang45n1q55vbp8eo7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.t_store",
-            "certificate_hash": "81df7541b3ac9a09c631786321bcecfab3035386"
-          }
-        },
-        {
-          "client_id": "411647451440-4fouikjviu9mnuunc9nj0i09gm7m0v7o.apps.googleusercontent.com",
+          "client_id": "916093930011-avpvcdtevcbhajl89puijv15fisec1b5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDdUsKlDuzh27jfUE5lsvSa-3jNU2RzDFE"
+          "current_key": "AIzaSyBud94jUI-kslDKj461ab4BMO-N_KV8_s0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "411647451440-4fouikjviu9mnuunc9nj0i09gm7m0v7o.apps.googleusercontent.com",
+              "client_id": "916093930011-avpvcdtevcbhajl89puijv15fisec1b5.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "411647451440-51e9a00r6ra3597sh2vsmi8nsd5oj864.apps.googleusercontent.com",
+              "client_id": "916093930011-6kh6dsc0n6mt9j0rdmjsijg917kqqmg4.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "com.example.tStore"

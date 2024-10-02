@@ -25,7 +25,7 @@ class TSignupForm extends StatelessWidget {
               Expanded(
                 child: TextFormField(
                   controller: controller.firstName,
-                  validator: (value) => TValidator.validateEmptyText('First Name', value),
+                  validator: (value) => TValidator.validateEmptyText('Họ', value),
                   expands: false,
                   decoration: const InputDecoration(
                       labelText: TTexts.firstName,
@@ -36,7 +36,7 @@ class TSignupForm extends StatelessWidget {
               Expanded(
                 child: TextFormField(
                   controller: controller.lastName,
-                  validator: (value) => TValidator.validateEmptyText('Last Name', value),
+                  validator: (value) => TValidator.validateEmptyText('Tên', value),
                   expands: false,
                   decoration: const InputDecoration(
                       labelText: TTexts.lastName,
@@ -50,7 +50,7 @@ class TSignupForm extends StatelessWidget {
           //--- UserName
           TextFormField(
             controller: controller.userName,
-            validator: (value) => TValidator.validateEmptyText('User Name', value),
+            validator: (value) => TValidator.validateEmptyText('Tên người dùng', value),
             expands: false,
             decoration: const InputDecoration(
                 labelText: TTexts.username,
@@ -78,7 +78,7 @@ class TSignupForm extends StatelessWidget {
 
           //--- Password
           Obx(
-            () => TextFormField(
+                () => TextFormField(
               validator: (value) => TValidator.validatePassword(value),
               controller: controller.password,
               obscureText: controller.hidePassword.value,
@@ -109,5 +109,3 @@ class TSignupForm extends StatelessWidget {
     );
   }
 }
-
-

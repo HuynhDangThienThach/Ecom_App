@@ -21,23 +21,25 @@ class OnBoardingController extends GetxController {
   /// Update Current Index & jump to next Page
   void nextPage(){
     if(currentPageIndex.value == 2){
-        final storage = GetStorage();
+      final storage = GetStorage();
 
-        if (kDebugMode){
-          print('============== GET STORAGE NEXT BUTTON ==============');
-          print(storage.read('IsFirstTime'));
-        }
+      if (kDebugMode){
+        print('============== GET STORAGE NEXT BUTTON ==============');
+        print(storage.read('IsFirstTime'));
+      }
 
-        storage.write('IsFirstTime', false);
-        Get.offAll(const LoginScreen());
+      storage.write('IsFirstTime', false);
+      Get.offAll(const LoginScreen());
     }else{
       int page = currentPageIndex.value +1;
       pageController.jumpToPage(page);
     }
   }
   /// Update Current Index & jump to the last Page
+  /// Update Current Index & jump to the last Page
   void skipPage(){
-    currentPageIndex.value = 2;
-    pageController.jumpTo(2);
+    currentPageIndex.value = 3;
+    pageController.jumpToPage(3);
   }
+
 }

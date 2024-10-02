@@ -36,12 +36,12 @@ class CartController extends GetxController {
     /// Kiểm tra hàng trong kho đã hết ?
     if (product.productType == ProductType.variable.toString()){
       if(variationController.selectedVariation.value.stock <1 ){
-        TLoaders.warningSnackBar(message: "Selected variation is out of stock", title: 'Oh Snap!');
+        TLoaders.warningSnackBar(message: "Selected variation is out of stock", title: 'Chà, thật đáng tiếc!');
         return;
       }
     } else{
         if(product.stock < 1 ){
-          TLoaders.warningSnackBar(message: 'Selected Product is out of stock.', title: 'Oh Snap!');
+          TLoaders.warningSnackBar(message: 'Selected Product is out of stock.', title: 'Chà, thật đáng tiếc!');
           return;
         }
     }
@@ -74,9 +74,7 @@ class CartController extends GetxController {
   }
 
   void removeOneFromCart(CartItemModel item) {
-    int index = cartItems.indexWhere((cartItem) =>
-    cartItem.productId == item.productId &&
-        cartItem.variationId == item.variationId);
+    int index = cartItems.indexWhere((cartItem) => cartItem.productId == item.productId && cartItem.variationId == item.variationId);
 
     if (index >= 0) {
       if (cartItems[index].quantity > 1) {

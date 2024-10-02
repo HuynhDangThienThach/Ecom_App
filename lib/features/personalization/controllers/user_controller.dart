@@ -37,15 +37,15 @@ class UserController extends GetxController {
 
   /// Fetch user record
   Future<void> fetchUserRecord() async {
-   try{
-     profileLoading.value = true;
-     final user = await userRepository.fetchUserDetails();
-     this.user(user);
-   } catch(e){
-     user(UserModel.empty());
-   } finally {
-     profileLoading.value = false;
-   }
+    try{
+      profileLoading.value = true;
+      final user = await userRepository.fetchUserDetails();
+      this.user(user);
+    } catch(e){
+      user(UserModel.empty());
+    } finally {
+      profileLoading.value = false;
+    }
   }
   //--- Save user Record from any Registration provider
   Future<void> saveUserRecord(UserCredential? userCredentials) async {
@@ -85,17 +85,17 @@ class UserController extends GetxController {
   /// Delete Account Warning
   void deleteAccountWarningPopup(){
     Get.defaultDialog(
-      contentPadding: const EdgeInsets.all(TSizes.md),
-      title: 'Delete Account',
-      middleText: 'Are you sure want to delete your account permanently? This action is not reversible and all of your data will be removed permanently',
-      confirm: ElevatedButton(
-          onPressed: () async => deleteUserAccount(),
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.red, side: const BorderSide(color: Colors.red)),
-          child: const Padding(padding: EdgeInsets.symmetric(horizontal: TSizes.lg), child: Text('Delete'))
-      ),
-      cancel: OutlinedButton(
-          onPressed: () => Navigator.of(Get.overlayContext!).pop(),
-          child: const Text('Cancel'))
+        contentPadding: const EdgeInsets.all(TSizes.md),
+        title: 'Delete Account',
+        middleText: 'Are you sure want to delete your account permanently? This action is not reversible and all of your data will be removed permanently',
+        confirm: ElevatedButton(
+            onPressed: () async => deleteUserAccount(),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red, side: const BorderSide(color: Colors.red)),
+            child: const Padding(padding: EdgeInsets.symmetric(horizontal: TSizes.lg), child: Text('Delete'))
+        ),
+        cancel: OutlinedButton(
+            onPressed: () => Navigator.of(Get.overlayContext!).pop(),
+            child: const Text('Cancel'))
     );
   }
 
@@ -122,7 +122,7 @@ class UserController extends GetxController {
       }
     } catch (e){
       TFullScreenLoader.stopLoading();
-      TLoaders.warningSnackBar(title: 'Oh Snap!', message: e.toString());
+      TLoaders.warningSnackBar(title: 'Chà, thật đáng tiếc!', message: e.toString());
     }
   }
 
@@ -148,7 +148,7 @@ class UserController extends GetxController {
       Get.offAll(() => const LoginScreen());
     }catch (e){
       TFullScreenLoader.stopLoading();
-      TLoaders.warningSnackBar(title: 'Oh Snap!', message: e.toString());
+      TLoaders.warningSnackBar(title: 'Chà, thật đáng tiếc!', message: e.toString());
     }
   }
 
@@ -170,7 +170,7 @@ class UserController extends GetxController {
         TLoaders.successSnackBar(title: 'Congratulations', message: 'Your Profile Image has been updated!');
       }
     }catch(e){
-      TLoaders.errorSnackBar(title: 'Oh Snap!', message: 'Something went wrong: $e');
+      TLoaders.errorSnackBar(title: 'Chà, thật đáng tiếc!', message: 'Something went wrong: $e');
     } finally{
       imageUploading.value = false;
     }

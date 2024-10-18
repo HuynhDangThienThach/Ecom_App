@@ -12,7 +12,7 @@ class TVerticalImageText extends StatelessWidget {
     required this.title,
     this.textColor = TColors.white,
     this.isNetworkImage = false,
-    this.backgroundColor ,
+    this.backgroundColor = Colors.white,
     this.onTap,
   });
 
@@ -38,19 +38,18 @@ class TVerticalImageText extends StatelessWidget {
                 padding: TSizes.sm * 1.4,
                 isNetworkImage: isNetworkImage,
                 backgroundColor: backgroundColor,
-                overlayColor: THelperFunctions.isDarkMode(context) ? TColors.light : TColors.dark,
               ),
               //--- Text
               const SizedBox(
                 height: TSizes.spaceBtwItems / 4,
               ),
               SizedBox(
-                  width: 55,
+                  width: 70,
+                  height: 40,
                   child: Text(
                     title,
                     style: Theme.of(context).textTheme.labelSmall!.apply(color: textColor),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                    maxLines: null,
                     textAlign: TextAlign.center,
                   ))
             ],

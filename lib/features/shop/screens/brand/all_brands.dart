@@ -17,14 +17,14 @@ class AllBrandsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final brandController = BrandController.instance;
     return Scaffold(
-      appBar: const TAppBar(title: Text('Brand'), showBackArrow: true,),
+      appBar: const TAppBar(title: Text('Thương hiệu'), showBackArrow: true,),
       body: SingleChildScrollView(
         child: Padding(
             padding: const EdgeInsets.all(TSizes.defaultSpace),
           child: Column(
             children: [
               //--- Heading
-              const TSectionHeading(title: "Brands", showActionButton: false,),
+              const TSectionHeading(title: "Tất cả thương hiệu thuốc", showActionButton: false,),
               const SizedBox(height: TSizes.spaceBtwItems,),
 
               // --- Brands GRID
@@ -33,7 +33,7 @@ class AllBrandsScreen extends StatelessWidget {
                     if(brandController.isLoading.value) return const TBrandsShimmer();
                     if(brandController.allBrands.isEmpty){
                       return Center(
-                        child: Text('No Data Found!!', style: Theme.of(context).textTheme.bodyMedium!.apply(color: Colors.white),),
+                        child: Text('Chưa có sản phẩm!', style: Theme.of(context).textTheme.bodyMedium!.apply(color: Colors.white),),
                       );
                     }
                     return TGrildLayout(

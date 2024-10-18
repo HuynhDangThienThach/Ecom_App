@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
                   SizedBox(height: TSizes.spaceBtwSections,),
 
                   //--- SearchBar
-                  TSearchContainer(text: 'Search in Store',),
+                  TSearchContainer(text: 'Tên thuốc, triệu chứng,... ',),
                   SizedBox(height: TSizes.spaceBtwSections,),
 
                   //--- Categories -- Tutorial
@@ -41,12 +41,12 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         //--- Heading
-                        TSectionHeading(
-                          title: 'Popular Categories',
-                          showActionButton: false,
-                          textColor: Colors.white,
-                        ),
-                        SizedBox(height: TSizes.spaceBtwItems,),
+                        // TSectionHeading(
+                        //   title: 'Danh mục phổ biến',
+                        //   showActionButton: false,
+                        //   textColor: Colors.white,
+                        // ),
+                        // SizedBox(height: TSizes.spaceBtwItems,),
                         //--- Categories
                         THomeCategories()
                       ],
@@ -67,9 +67,50 @@ class HomeScreen extends StatelessWidget {
 
                   //--- Heading
                   TSectionHeading(
-                    title: 'Popular Products',
+                    title: 'Siêu Deals Online',
                     onPressed: () => Get.to(() => AllProducts(
-                      title: 'Popular Products',
+                      showAction: true,
+                      title: 'Siêu Deals Online',
+                      //--- Truyền vào tất cả sản phẩm
+                      futureMethod: controller.fetchAllFeaturedProducts(),
+                    )),
+                  ),
+                  const SizedBox(height: TSizes.spaceBtwItems,),
+                  //--- Popular Products
+                  Obx( (){
+                    if(controller.isLoading.value) return const TVerticalProductShimmer();
+
+                    if(controller.superDiscountProducts.isEmpty){
+                      return Center(child: Text('Chưa có sản phẩm', style: Theme.of(context).textTheme.bodyMedium));
+                    }
+                    return TGrildLayout(itemCount: controller.superDiscountProducts.length, itemBuiler: (_, index) => TProductCardVertical(product: controller.superDiscountProducts[index],));
+                  }),
+                  //--- Heading
+                  TSectionHeading(
+                    title: 'Bán chạy toàn quốc',
+                    onPressed: () => Get.to(() => AllProducts(
+                      showAction: true,
+                      title: 'Top bán chạy toàn quốc',
+                      //--- Truyền vào tất cả sản phẩm
+                      futureMethod: controller.fetchAllFeaturedProducts(),
+                    )),
+                  ),
+                  const SizedBox(height: TSizes.spaceBtwItems,),
+                  //--- Popular Products
+                  Obx( (){
+                    if(controller.isLoading.value) return const TVerticalProductShimmer();
+
+                    if(controller.topSalesProducts.isEmpty){
+                      return Center(child: Text('Không có sản phẩm!!', style: Theme.of(context).textTheme.bodyMedium));
+                    }
+                    return TGrildLayout(itemCount: controller.topSalesProducts.length, itemBuiler: (_, index) => TProductCardVertical(product: controller.topSalesProducts[index],));
+                  }),
+                  //--- Heading
+                  TSectionHeading(
+                    title: 'Tủ thuốc gia đình',
+                    onPressed: () => Get.to(() => AllProducts(
+                      showAction: true,
+                      title: 'Tủ thuốc gia đình',
                       //--- Truyền vào tất cả sản phẩm
                       futureMethod: controller.fetchAllFeaturedProducts(),
                     )),
@@ -83,8 +124,27 @@ class HomeScreen extends StatelessWidget {
                       return Center(child: Text('No Data Found!!', style: Theme.of(context).textTheme.bodyMedium));
                     }
                     return TGrildLayout(itemCount: controller.featuredProducts.length, itemBuiler: (_, index) => TProductCardVertical(product: controller.featuredProducts[index],));
-                  })
-                ],
+                  }),
+                  TSectionHeading(
+                    title: 'Sản phẩm mới',
+                    onPressed: () => Get.to(() => AllProducts(
+                      showAction: true,
+                      title: 'Sản phẩm mới',
+                      //--- Truyền vào tất cả sản phẩm
+                      futureMethod: controller.fetchAllFeaturedProducts(),
+                    )),
+                  ),
+                  const SizedBox(height: TSizes.spaceBtwItems,),
+                  //--- Popular Products
+                  Obx( (){
+                    if(controller.isLoading.value) return const TVerticalProductShimmer();
+
+                    if(controller.newProducts.isEmpty){
+                      return Center(child: Text('Không có sản phẩm!!', style: Theme.of(context).textTheme.bodyMedium));
+                    }
+                    return TGrildLayout(itemCount: controller.newProducts.length, itemBuiler: (_, index) => TProductCardVertical(product: controller.newProducts[index],));
+                  }),
+                ]
               ),
             )
           ],

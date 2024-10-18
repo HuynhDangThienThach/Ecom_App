@@ -67,13 +67,14 @@ class VariationController extends GetxController {
   }
 
   // Nhận variation price
-  String getVariationPrice(){
-    return (selectedVariation.value.salePrice > 0 ? selectedVariation.value.salePrice : selectedVariation.value.price).toString();
+  int getVariationPrice() {
+    return (selectedVariation.value.salePrice > 0 ? selectedVariation.value.salePrice : selectedVariation.value.price).toInt();
   }
+
 
   // Check Product Variation Stock Status
   void getProductVariationStockStatus() {
-    variationStockStatus.value = selectedVariation.value.stock > 0 ? 'In Stock' : 'Out of Stock';
+    variationStockStatus.value = selectedVariation.value.stock > 0 ? 'Còn hàng' : 'Hết hàng';
   }
 
   // Reset Selected Attributes when switching products

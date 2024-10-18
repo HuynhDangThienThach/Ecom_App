@@ -24,7 +24,7 @@ class TRatingAndShare extends StatelessWidget {
                 children: [
                   TextSpan(text: '5.0', style: Theme.of(context).textTheme.bodyLarge),
                   const WidgetSpan(child: SizedBox(width: TSizes.spaceBtwItems /2,)),
-                  const TextSpan(text: '(199)'),
+                  const TextSpan(text: '(199 bình luận)'),
                 ],
               ),
             ),

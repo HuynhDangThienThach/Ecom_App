@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:t_store/common/widgets/appbar/appbar.dart';
 import 'package:t_store/common/widgets/loaders/animation_loader.dart';
 import 'package:t_store/features/shop/controllers/product/cart_controller.dart';
@@ -21,21 +22,21 @@ class CartScreen extends StatelessWidget {
       body: Obx(
        () {
          final emptyWidget = TAnimationLoaderWidget(
-           text: 'Whoops! Cart is EMPTY',
+           text: 'Rất tiếc! Giỏ hàng trống rỗng',
            animation: TImages.cartAnimation,
            showAction: true,
-           actionText: 'Let\'s fill it',
+           actionText: 'Hãy lấp đầy giỏ hàng',
            onActionPressed: () => Get.off(() => const NavigationMenu()),
          );
          
          if (controller.cartItems.isEmpty) {
            return emptyWidget;
          } else {
-           return const SingleChildScrollView(
+           return SingleChildScrollView(
              child: Padding (
-               padding: EdgeInsets.all(TSizes.defaultSpace),
+               padding: const EdgeInsets.all(TSizes.defaultSpace),
 
-               child: TCartItems()
+               child: TCartItems(items: controller.cartItems,)
                       ),
            );
          }
@@ -47,8 +48,11 @@ class CartScreen extends StatelessWidget {
               padding: const EdgeInsets.all(TSizes.defaultSpace),
               child: ElevatedButton(
                   onPressed: () => Get.to(() => const CheckoutScreen()),
-                  child: Obx(() => Text('Checkout \$${controller.totalCartPrice.value.toStringAsFixed(1)}'))),
-      ),
+                child: Obx(() => Text(
+                  'Thanh toán ${NumberFormat('#,##0').format(controller.totalCartPrice.value)}đ',
+                )),
+              )
+    ),
     );
   }
 }

@@ -21,46 +21,74 @@ class CartController extends GetxController {
     loadCartItems();
   }
 
-  // Add item in the cart
-  void addToCart(ProductModel product){
-    /// Kiểm tra số lượng sp trong giở hàng
-    if (productQuantityInCart.value <1 ){
-      TLoaders.customToast(message: 'Select Quantity');
-      return;
-    }
-    /// Kiểm tra biến thể được chọn
-    if(product.productType == ProductType.variable.toString() && variationController.selectedVariation.value.id.isEmpty){
-      TLoaders.customToast(message: 'Select Variation');
-      return;
-    }
-    /// Kiểm tra hàng trong kho đã hết ?
-    if (product.productType == ProductType.variable.toString()){
-      if(variationController.selectedVariation.value.stock <1 ){
-        TLoaders.warningSnackBar(message: "Selected variation is out of stock", title: 'Chà, thật đáng tiếc!');
-        return;
-      }
-    } else{
-        if(product.stock < 1 ){
-          TLoaders.warningSnackBar(message: 'Selected Product is out of stock.', title: 'Chà, thật đáng tiếc!');
-          return;
-        }
-    }
-    // Chuyển Product Model thành CartItemModel với số lượng đã có
-    final selectedCartItem = convertToCartItem(product, productQuantityInCart.value);
 
-    // Kiểm tra xem đã thêm vào giỏ hàng chưa
+// Thêm sản phẩm vào giỏ hàng
+  void addToCart(ProductModel product) {
+    if (!_isProductValidForCart(product)) return;
+
+    final selectedCartItem = convertToCartItem(product, productQuantityInCart.value);
     int index = cartItems.indexWhere((cartItem) => cartItem.productId == selectedCartItem.productId && cartItem.variationId == selectedCartItem.variationId);
 
     // Kiểm tra sản phẩm trong giỏ hàng
-    if(index >= 0){
-      // Số lượng đã được thêm vào, cập nhật hoặc xóa từ design  Cart (-)
+    if (index >= 0) {
+      // Cập nhật số lượng
       cartItems[index].quantity = selectedCartItem.quantity;
-    } else{
+    } else {
       cartItems.add(selectedCartItem);
     }
 
     updateCart();
-    TLoaders.customToast(message: "Your Product has been added to the Cart");
+    TLoaders.customToast(message: "Sản phẩm đã thêm vào giỏ hàng");
+  }
+
+// Mua ngay sản phẩm
+  void buyNow(ProductModel product) {
+    if (!_isProductValidForCart(product)) return;
+
+    final selectedCartItem = convertToCartItem(product, productQuantityInCart.value);
+    final List<CartItemModel> tempCartItems = [selectedCartItem];
+
+    Get.toNamed('/checkout', arguments: tempCartItems);
+  }
+
+  // Kiểm tra tính hợp lệ của sản phẩm
+  bool _isProductValidForCart(ProductModel product) {
+    if (productQuantityInCart.value < 1) {
+      TLoaders.customToast(message: 'Chọn số lượng');
+      return false;
+    }
+
+    if (product.productType == ProductType.variable.toString() &&
+        variationController.selectedVariation.value.id.isEmpty) {
+      TLoaders.customToast(message: 'Chọn biến thể');
+      return false;
+    }
+
+    if (product.productType == ProductType.single.toString() &&
+        variationController.selectedVariation.value.id.isEmpty) {
+      TLoaders.customToast(message: 'Chọn biến thể');
+      return false;
+    }
+
+    if (product.productType == ProductType.variable.toString() &&
+        variationController.selectedVariation.value.stock < 1) {
+      TLoaders.warningSnackBar(message: "Biến thể đã chọn đã hết hàng.", title: 'Chà, thật đáng tiếc!');
+      return false;
+    } else if (product.stock < 1) {
+      TLoaders.warningSnackBar(message: 'Sản phẩm đã chọn hiện hết hàng', title: 'Chà, thật đáng tiếc!');
+      return false;
+    }
+
+    if (product.productType == ProductType.single.toString() &&
+        variationController.selectedVariation.value.stock < 1) {
+      TLoaders.warningSnackBar(message: "Biến thể đã chọn đã hết hàng.", title: 'Chà, thật đáng tiếc!');
+      return false;
+    } else if (product.stock < 1) {
+      TLoaders.warningSnackBar(message: 'Sản phẩm đã chọn hiện hết hàng', title: 'Chà, thật đáng tiếc!');
+      return false;
+    }
+
+    return true;
   }
 
   void addOneToCart(CartItemModel item){
@@ -86,28 +114,27 @@ class CartController extends GetxController {
       }
     } else {
       // Xử lý nếu không tìm thấy sản phẩm trong giỏ hàng
-      print('Item not found in cart');
+      print('Sản phẩm không được tìm thấy!');
     }
 
     updateCart();
   }
 
-
   void removeFromCartDialog(int index){
     Get.defaultDialog(
-      title: 'Remove Product',
-      middleText: 'Are you sure you want to remove this product ?',
+      title: 'Xóa sản phẩm',
+      middleText: 'Bạn có chắc sẽ xóa sản phẩm khỏi giỏ hàng',
       onConfirm: (){
         cartItems.removeAt(index);
         updateCart();
-        TLoaders.customToast(message: 'Product removed from the Cart.');
+        TLoaders.customToast(message: 'Sản phẩm đã được xóa khỏi giỏ hàng');
         Get.back();
       },
       onCancel: () => () => Get.back(),
     );
   }
 
-  // Khởi tạo đã thêm số lương sản phâẩm vào giỏ hàng
+  // Khởi tạo đã thêm số lương sản phẩm vào giỏ hàng
   void updateAlreadyAddedProductCount(ProductModel product){
     // Nếu sản phẩm không có biến thể thì tính toán CartEntries và hiển thị tổng số.
     // Ngược lại đặt các mục nhập mặc đinh thành 6 và hiển thị CartEntries khi biến thể được chọn

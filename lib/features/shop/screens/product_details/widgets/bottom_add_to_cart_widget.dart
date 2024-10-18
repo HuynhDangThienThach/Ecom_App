@@ -20,7 +20,7 @@ class TBottomAddToCart extends StatelessWidget {
     final controller = CartController.instance;
     controller.updateAlreadyAddedProductCount(product);
     return  Container(
-      padding: const EdgeInsets.symmetric(horizontal: TSizes.defaultSpace, vertical: TSizes.defaultSpace /2),
+      padding: const EdgeInsets.symmetric(horizontal: TSizes.spaceBtwItems, vertical: TSizes.defaultSpace /2),
       decoration: BoxDecoration(
         color: dark ? TColors.darkGrey : TColors.light,
         borderRadius: const BorderRadius.only(
@@ -40,7 +40,7 @@ class TBottomAddToCart extends StatelessWidget {
                   width: 40,
                   height: 40,
                   color: TColors.white,
-                  onPressed: () => controller.productQuantityInCart.value < 1 ? null : controller.productQuantityInCart.value -= 1 ,
+                  onPressed: () => controller.productQuantityInCart.value < 0 ? null : controller.productQuantityInCart.value -= 1 ,
                 ),
                 const SizedBox(width: TSizes.spaceBtwItems,),
                 Text(controller.productQuantityInCart.value.toString(), style: Theme.of(context).textTheme.titleSmall),
@@ -55,16 +55,32 @@ class TBottomAddToCart extends StatelessWidget {
                 ),
               ],
             ),
-          ElevatedButton(
-              onPressed: controller.productQuantityInCart.value < 1 ? null : () => controller.addToCart(product),
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(TSizes.md),
-                backgroundColor: TColors.black,
-                side: const BorderSide(color: TColors.black)
+              ElevatedButton(
+                onPressed: controller.productQuantityInCart.value < 1 ? null : () => controller.addToCart(product),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(TSizes.sm),
+                  backgroundColor: controller.productQuantityInCart.value > 0 ? TColors.primary1 : TColors.white,
+                  side: const BorderSide(color: TColors.black),
+                ),
+                child: Text(
+                  'Thêm giỏ hàng',
+                  style: TextStyle(
+                    color: controller.productQuantityInCart.value > 0 ? TColors.white : TColors.black,
+                    fontSize: 14
+                  ),
+                ),
               ),
-              child: const Text('Add to Cart')
-          ),
-        ]
+              ElevatedButton(
+                  onPressed: controller.productQuantityInCart.value < 1 ? null : () => controller.buyNow(product),
+                  style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.all(TSizes.sm),
+                      backgroundColor: TColors.black,
+                      side: const BorderSide(color: TColors.black)
+                  ),child: Text('Mua ngay', style: TextStyle(
+                  color: controller.productQuantityInCart.value > 0 ? TColors.white : TColors.black,
+                  fontSize: 14
+              ),)),
+            ],
             ),
       )
     );

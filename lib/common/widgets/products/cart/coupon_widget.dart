@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/helper_functions.dart';
+import '../../../../utils/popups/loaders.dart';
 import '../../custom_shapes/containers/rounded_container.dart';
 
 
@@ -22,7 +23,7 @@ class TCouponCode extends StatelessWidget {
           Flexible(
             child: TextFormField(
               decoration: const InputDecoration(
-                hintText: "Have a promo code? Enter here",
+                hintText: "Có mã khuyến mại? Nhập vào đây",
                 focusedBorder: InputBorder.none,
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
@@ -36,13 +37,13 @@ class TCouponCode extends StatelessWidget {
           SizedBox(
             width: 80,
             child: ElevatedButton(
-              onPressed: (){},
+              onPressed: () => TLoaders.warningSnackBar(title: "Chà, rất tiếc!", message: "Mã của bạn không chính xác"),
               style: ElevatedButton.styleFrom(
                 foregroundColor: dark ? TColors.white.withOpacity(0.5) : TColors.dark.withOpacity(0.5),
                 backgroundColor: Colors.blue.withOpacity(0.2),
                 side: BorderSide(color: Colors.grey.withOpacity(0.1)),
               ),
-              child: const Text("Apply"),
+              child: const Text("Xác nhận"),
             ),
           )
         ],

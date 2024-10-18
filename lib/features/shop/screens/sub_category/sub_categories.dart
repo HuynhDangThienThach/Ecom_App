@@ -11,6 +11,8 @@ import 'package:t_store/utils/constants/sizes.dart';
 import 'package:t_store/utils/helpers/cloud_helper_functions.dart';
 
 import '../../../../common/widgets/shimmers/horizontal_productshimmer.dart';
+import '../../controllers/cateFeauture_controller.dart';
+import '../../models/cateFeature_model.dart';
 import '../../models/category_model.dart';
 
 class SubCategoriesScreen extends StatelessWidget {
@@ -66,7 +68,7 @@ class SubCategoriesScreen extends StatelessWidget {
                                showActionButton: true,
                                onPressed: () => Get.to(AllProducts(
                                  title: subCategory.name,
-                                 futureMethod: controller.getCategoryProducts(categoryId: subCategory.id, limit: -1),),
+                                 futureMethod: controller.getCategoryProducts(categoryId: subCategory.id, limit: -1), showAction: false,),
                                ),
                              ),
                              const SizedBox(height: TSizes.spaceBtwItems / 2,),

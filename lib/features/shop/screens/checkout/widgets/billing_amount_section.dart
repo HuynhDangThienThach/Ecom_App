@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:t_store/features/shop/controllers/product/cart_controller.dart';
 import 'package:t_store/utils/helpers/pricing_calculator.dart';
 
@@ -12,14 +13,15 @@ class TBillingAmountSection extends StatelessWidget {
     final controller = CartController.instance;
     final subTotal = controller.totalCartPrice.value;
 
+
     return Column(
       children: [
         //--- SubTotal
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Subtotal: ', style: Theme.of(context).textTheme.bodyMedium,),
-            Text('\$$subTotal', style: Theme.of(context).textTheme.bodyMedium,),
+            Text('Tổng: ', style: Theme.of(context).textTheme.bodyMedium,),
+            Text('${NumberFormat('#,##0').format(subTotal)}đ', style: Theme.of(context).textTheme.bodyMedium,),
           ],
         ),
         const SizedBox(height: TSizes.spaceBtwItems / 2,),
@@ -28,8 +30,8 @@ class TBillingAmountSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Shipping Fee: ', style: Theme.of(context).textTheme.bodyMedium,),
-            Text('\$${TPricingCalculator.calculateShippingCost(subTotal, 'VN')}', style: Theme.of(context).textTheme.labelLarge,),
+            Text('Phí vận chuyển: ', style: Theme.of(context).textTheme.bodyMedium,),
+            Text(TPricingCalculator.calculateShippingCost(subTotal, 'VN'), style: Theme.of(context).textTheme.labelLarge,),
           ],
         ),
         const SizedBox(height: TSizes.spaceBtwItems / 2,),
@@ -38,8 +40,8 @@ class TBillingAmountSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Tax Fee: ', style: Theme.of(context).textTheme.bodyMedium,),
-            Text('\$${TPricingCalculator.calculateTax(subTotal, 'VN')} ', style: Theme.of(context).textTheme.labelLarge,),
+            Text('Phí thuế: ', style: Theme.of(context).textTheme.bodyMedium,),
+            Text(TPricingCalculator.calculateTax(subTotal, 'VN'), style: Theme.of(context).textTheme.labelLarge,),
           ],
         ),
         const SizedBox(height: TSizes.spaceBtwItems / 2,),
@@ -48,8 +50,8 @@ class TBillingAmountSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Oder Total: ', style: Theme.of(context).textTheme.bodyMedium,),
-            Text('\$${TPricingCalculator.calculateTotalPrice(subTotal, 'VN')} ', style: Theme.of(context).textTheme.titleMedium,),
+            Text('Thành tiền: ', style: Theme.of(context).textTheme.bodyMedium,),
+            Text('${NumberFormat('#,##0').format(TPricingCalculator.calculateTotalPrice(subTotal, 'VN'))}đ', style: Theme.of(context).textTheme.titleMedium,),
           ],
         ),
         const SizedBox(height: TSizes.spaceBtwItems / 2,),

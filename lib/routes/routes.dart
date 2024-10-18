@@ -4,6 +4,8 @@
 class TRoutes{
   static const home = "/";
   static const store = "/store";
+  static const profileDs = "/profileDsScreen";
+  static const healthCheck = "/healthCheck";
   static const favourites = "/favourites";
   static const settings = "/settings";
   static const subCategories = "/sub-categories";

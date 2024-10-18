@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:t_store/common/widgets/custom_shapes/containers/rounded_container.dart';
 import 'package:t_store/features/shop/controllers/product/cart_controller.dart';
 import 'package:t_store/features/shop/screens/cart/widget/cart_items.dart';
@@ -14,6 +15,7 @@ import '../../../../common/widgets/appbar/appbar.dart';
 import '../../../../common/widgets/products/cart/coupon_widget.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../controllers/product/order_controller.dart';
+import '../../models/cart_item_model.dart';
 
 class CheckoutScreen extends StatelessWidget {
   const CheckoutScreen({super.key});
@@ -21,22 +23,33 @@ class CheckoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartController = CartController.instance;
-    final subTotal = cartController.totalCartPrice.value;
+    final List<CartItemModel>? tempCartItems = Get.arguments as List<CartItemModel>?;
+
+    // Nếu có giỏ hàng tạm thời (buy now), sử dụng nó; nếu không thì dùng giỏ hàng từ cartController
+    final List<CartItemModel> itemsToCheckout = tempCartItems ?? cartController.cartItems;
+
+    // Tính tổng tiền từ các sản phẩm
+    final subTotal = itemsToCheckout.fold(0.0, (total, item) => total + item.price * item.quantity);
+
     final orderController = Get.put(OrderController());
     final totalAmount = TPricingCalculator.calculateTotalPrice(subTotal, 'VN');
     final dark = THelperFunctions.isDarkMode(context);
+
     return Scaffold(
-      appBar: TAppBar(showBackArrow: true, title: Text('Oder Review', style: Theme.of(context).textTheme.headlineSmall), ),
+      appBar: TAppBar(showBackArrow: true, title: Text('Thanh toán đơn hàng', style: Theme.of(context).textTheme.headlineSmall)),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(TSizes.defaultSpace),
           child: Column(
             children: [
               //--- Items in Cart
-              const TCartItems(showAddRemoveButtons: false,),
+              TCartItems(
+                showAddRemoveButtons: false,
+                items: itemsToCheckout, // Truyền danh sách sản phẩm vào đây
+              ),
               const SizedBox(height: TSizes.spaceBtwSections,),
 
-              //--- Coupon TextFiled
+              //--- Coupon TextField
               const TCouponCode(),
               const SizedBox(height: TSizes.spaceBtwSections,),
 
@@ -54,15 +67,16 @@ class CheckoutScreen extends StatelessWidget {
                     //--- Divider
                     Divider(),
                     SizedBox(height: TSizes.spaceBtwItems,),
+
                     //--- Payment Methods
                     TBillingPaymentSection(),
                     SizedBox(height: TSizes.spaceBtwItems,),
+
                     //--- Address
-                    TBillingAddressSection()
+                    TBillingAddressSection(),
                   ],
                 ),
               )
-
             ],
           ),
         ),
@@ -72,10 +86,11 @@ class CheckoutScreen extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(TSizes.defaultSpace),
         child: ElevatedButton(
-            onPressed: subTotal > 0
-                ? () => orderController.processOrder(totalAmount)
-                : () => TLoaders.warningSnackBar(title: 'Empty Cart', message: 'Add items in the cart in order to proceed'),
-            child: Text('Checkout \$$totalAmount')),
+          onPressed: subTotal > 0
+              ? () => orderController.processOrder(totalAmount)
+              : () => TLoaders.warningSnackBar(title: 'Giỏ hàng trống', message: 'Thêm các mặt hàng vào giỏ hàng để tiếp tục'),
+          child: Text('Thanh toán ${NumberFormat('#,##0').format(totalAmount)}đ'),
+        ),
       ),
     );
   }

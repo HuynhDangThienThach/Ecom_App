@@ -126,7 +126,7 @@ class AddressController extends GetxController {
     } catch(e){
       // Remove Loader
       TFullScreenLoader.stopLoading();
-      TLoaders.errorSnackBar(title: "Address not found", message: e.toString());
+      TLoaders.errorSnackBar(title: "Không tìm thấy địa chỉ", message: e.toString());
     }
   }
 
@@ -138,7 +138,8 @@ class AddressController extends GetxController {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const TSectionHeading(title: 'Select Address', showActionButton: false),
+                  const TSectionHeading(title: 'Chọn địa chỉ', showActionButton: false),
+                  const SizedBox(height: TSizes.spaceBtwItems,),
                   FutureBuilder(
                     future: getAllUserAddress(),
                     builder: (_, snapshot) {
@@ -159,13 +160,13 @@ class AddressController extends GetxController {
                       );
                     },
                   ),
-                  const SizedBox(height: TSizes.defaultSpace * 2),
+                  const SizedBox(height: TSizes.defaultSpace),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () =>
                           Get.to(() => const AddNewAddressScreen()),
-                      child: const Text('Add new address'),),
+                      child: const Text('Thêm địa chỉ mới'),),
                   ),
                 ]
             )

@@ -25,9 +25,41 @@ class TPromoSlider extends StatelessWidget {
             return Column(
               children: [
                 CarouselSlider(
-                  options: CarouselOptions(viewportFraction: 1, onPageChanged: (index, _) => controller.updatePageIndicator(index),),
-                  items: controller.banners.map((banner) =>  TRoundedImage( imageUrl: banner.imageUrl, isNetworkImage: true, onPressed: () =>Get.toNamed(banner.targetScreen),)).toList(),
+                  options: CarouselOptions(
+                    viewportFraction: 1,
+                    onPageChanged: (index, _) => controller.updatePageIndicator(index),
+                  ),
+                  items: controller.banners.map((banner) =>
+                      Stack(
+                        children: [
+                          TRoundedImage(
+                            imageUrl: banner.imageUrl,
+                            isNetworkImage: true,
+                            onPressed: () => Get.toNamed(banner.targetScreen),
+                          ),
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Text(
+                                'HOT',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                  ).toList(),
                 ),
+
                 const SizedBox(height: TSizes.spaceBtwItems,),
                 Center(
                   child: Obx(

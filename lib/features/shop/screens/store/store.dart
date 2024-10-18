@@ -23,18 +23,26 @@ class StoreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final dark = THelperFunctions.isDarkMode(context);
     final brandController = Get.put(BrandController());
-    final categories = CategoryController.instance.featuredCategories;
-    return DefaultTabController(
-      length: 7,
-      child: Scaffold(
-        appBar: TAppBar(
-          title: Text(
-            'Store',
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          action: const [TCartCounterIcon()],
-        ),
-        body: NestedScrollView(
+    final controller = Get.put(CategoryController());
+    final categories = controller.featuredCategories;
+    return Scaffold(
+      appBar: TAppBar(
+        title: Text('Danh mục', style: Theme.of(context).textTheme.headlineMedium,),
+        action: const [TCartCounterIcon()],
+      ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (controller.featuredCategories.isEmpty) {
+          return Center(
+            child: Text('Không có loại sản phẩm nào!', style: Theme.of(context).textTheme.bodyMedium),
+          );
+        }
+        return DefaultTabController(
+          length: categories.length,  // Dùng số lượng chính xác từ categories
+          child: NestedScrollView(
             headerSliverBuilder: (_, innerBoxIsScrolled) {
               return [
                 SliverAppBar(
@@ -49,53 +57,57 @@ class StoreScreen extends StatelessWidget {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
-                        //--- Search Bar
-                        const SizedBox(height: TSizes.spaceBtwItems,),
+                        const SizedBox(height: TSizes.spaceBtwItems),
                         const TSearchContainer(
-                          text: 'Search in Store',
+                          text: 'Tên thuốc, triệu chứng,... ',
                           showBackground: false,
                           showBorder: true,
                           padding: EdgeInsets.zero,
                         ),
-                        const SizedBox(height: TSizes.spaceBtwSections,),
+                        const SizedBox(height: TSizes.spaceBtwSections),
 
-                        //--- Featured Brands
                         TSectionHeading(
-                            title: 'Featured Brands', onPressed: () => Get.to(() => const AllBrandsScreen())),
-                        const SizedBox(height: TSizes.spaceBtwItems / 1.5,),
+                            title: 'Thương hiệu đặc trưng', onPressed: () => Get.to(() => const AllBrandsScreen())),
+                        const SizedBox(height: TSizes.spaceBtwItems / 1.5),
 
-                        // --- Brands GRID
-                        Obx(
-                            (){
-                              if(brandController.isLoading.value) return const TBrandsShimmer();
-                              if(brandController.featureBrands.isEmpty){
-                                return Center(
-                                  child: Text('No Data Found!', style: Theme.of(context).textTheme.bodyMedium!.apply(color: Colors.white),),
-                                );
-                              }
-                              return TGrildLayout(
-                                  itemCount: brandController.featureBrands.length,
-                                  mainAxisExtent: 80,
-                                  itemBuiler: (_, index) {
-                                    final brand = brandController.featureBrands[index];
-                                    return TBrandCard(showBorder: true, brand: brand,);
-                                  });
-                            }
-                        )
+                        Obx(() {
+                          if (brandController.isLoading.value) {
+                            return const TBrandsShimmer();
+                          }
+                          if (brandController.featureBrands.isEmpty) {
+                            return Center(
+                              child: Text('Không có sản phẩm!',
+                                style: Theme.of(context).textTheme.bodyMedium!.apply(color: Colors.white),
+                              ),
+                            );
+                          }
+                          return TGrildLayout(
+                            itemCount: brandController.featureBrands.length,
+                            mainAxisExtent: 80,
+                            itemBuiler: (_, index) {
+                              final brand = brandController.featureBrands[index];
+                              return TBrandCard(showBorder: true, brand: brand);
+                            },
+                          );
+                        }),
                       ],
                     ),
                   ),
-                  //--- Tabs bottom
-                  bottom: TTabBar(tabs: categories.map((category) => Tab(child: Text(category.name))).toList()),
+                  bottom: TTabBar(
+                    tabs: categories.map((category) => Tab(child: Text(category.name))).toList(),
+                  ),
                 ),
               ];
             },
             body: TabBarView(
-              children: categories.map((category) => TCategoryTab(category: category)).toList()
-            )),
-      ),
+              children: categories.map((category) => TCategoryTab(category: category)).toList(),
+            ),
+          ),
+        );
+      }),
     );
   }
+
 }
 
 

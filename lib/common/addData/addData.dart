@@ -11,8 +11,8 @@ Future<void> importJsonToFirestore() async {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   // Thêm dữ liệu vào collection 'Products'
-  data['Products'].forEach((key, value) async {
-    await firestore.collection('Products').doc(key).set(value);
+  data['CateFeature'].forEach((key, value) async {
+    await firestore.collection('CateFeature').doc(key).set(value);
     print('Document $key successfully written!');
   });
 

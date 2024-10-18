@@ -19,8 +19,6 @@ class ProductCardAddToCartButton extends StatelessWidget {
     final cartController = CartController.instance;
     return InkWell(
         onTap: () {
-          // Nếu sản phẩm có nhiều biến thể thì hiển thị chi tiết sản phẩm để lựa chọn biến thể
-
           // Thêm sản phẩm vào giỏ hàng
           if (product.productType == ProductType.single.toString()) {
             final cartItem = cartController.convertToCartItem(product, 1);

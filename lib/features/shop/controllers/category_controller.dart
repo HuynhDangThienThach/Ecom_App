@@ -31,7 +31,7 @@ class CategoryController extends GetxController {
       // Cập nhật danh sách loại hàng
       allCategories.assignAll(categories);
       // Bộ lọc các loại hàng đặt trưng
-      featuredCategories.assignAll(allCategories.where((category) => category.isFeatured && category.parentId.isEmpty).take(7).toList());
+      featuredCategories.assignAll(allCategories.where((category) => category.isFeatured && category.parentId.isEmpty).toList());
     }catch (e){
       TLoaders.errorSnackBar(title: 'Chà, thật đáng tiếc!', message: e.toString());
   } finally {

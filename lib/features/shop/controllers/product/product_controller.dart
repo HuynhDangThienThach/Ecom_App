@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:t_store/utils/constants/enums.dart';
 import '../../../../data/repositories/product/product_repository.dart';
 import '../../../../utils/popups/loaders.dart';
@@ -9,10 +10,16 @@ class ProductController extends GetxController {
   final isLoading = false.obs;
   final productRepository = Get.put(ProductRepository());
   RxList<ProductModel> featuredProducts = <ProductModel>[].obs;
+  RxList<ProductModel> superDiscountProducts = <ProductModel>[].obs;
+  RxList<ProductModel> topSalesProducts = <ProductModel>[].obs;
+  RxList<ProductModel> newProducts = <ProductModel>[].obs;
 
   @override
   void onInit() {
     fetchFeaturedProducts();
+    getSuperDiscountProducts();
+    getTopSalesProducts();
+    getNewProducts();
     super.onInit();
   }
 
@@ -26,6 +33,75 @@ class ProductController extends GetxController {
       featuredProducts.assignAll(products);
     } catch (e) {
       TLoaders.errorSnackBar(title: 'Chà, thật đáng tiếc!', message: e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  //-- Lấy sản phẩm có top discount
+  void getSuperDiscountProducts() async {
+    try {
+      isLoading.value = true;
+
+      // Fetch all featured products from the repository
+      final products = await productRepository.getFeaturedProducts();
+
+      // Lọc sản phẩm có giảm giá hơn 50%
+      final discountedProducts = products.where((product) {
+        if (product.salePrice > 0) {
+          final discountPercentage = calculateSalePercentage(product.price, product.salePrice);
+          if (discountPercentage != null) {
+            return double.parse(discountPercentage) >= 50;
+          }
+        }
+        return false;
+      }).toList();
+
+      // Assign filtered products
+      superDiscountProducts.assignAll(discountedProducts);
+
+    } catch (e) {
+      TLoaders.errorSnackBar(
+          title: 'Chà, thật đáng tiếc!',
+          message: e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  //-- Lấy sản phẩm bán chạy toàn quốc
+  void getTopSalesProducts() async {
+    try {
+      isLoading.value = true;
+
+      // Fetch all featured products from the repository
+      final products = await productRepository.getStockProducts();
+
+      topSalesProducts.assignAll(products);
+
+    } catch (e) {
+      TLoaders.errorSnackBar(
+          title: 'Chà, thật đáng tiếc!',
+          message: e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  //-- Lấy sản phẩm mới
+  void getNewProducts() async {
+    try {
+      isLoading.value = true;
+
+      // Fetch all featured products from the repository
+      final products = await productRepository.getNewProducts();
+
+      newProducts.assignAll(products);
+
+    } catch (e) {
+      TLoaders.errorSnackBar(
+          title: 'Chà, thật đáng tiếc!',
+          message: e.toString());
     } finally {
       isLoading.value = false;
     }
@@ -46,10 +122,11 @@ class ProductController extends GetxController {
   String getProductPrice(ProductModel product){
     double smallestPrice = double.infinity;
     double largestPrice = 0.0;
+    final formatCurrency = NumberFormat('#,##0');
 
-    // Nếu không có sp tồn tại, trả về giá cơ bản, hoặc giảm giá
+    // Nếu có 1 loại sản phẩm, trả về giá cơ bản, hoặc giảm giá
     if(product.productType == ProductType.single.toString()){
-      return (product.salePrice > 0 ? product.salePrice : product.price).toString();
+      return '${formatCurrency.format(product.salePrice > 0 ? product.salePrice : product.price)}đ';
     } else{
       for(var variation in product.productVariations!){
         // Nếu variation.salePrice > 0 trả về variation.salePrice ngược lại trả về variation.price
@@ -69,7 +146,7 @@ class ProductController extends GetxController {
         return largestPrice.toString();
       }else{
         // Nếu smallestPrice và largestPrice khác nhau  trả về cả 2
-        return '$smallestPrice - \$$largestPrice';
+        return '${formatCurrency.format(smallestPrice)}đ - ${formatCurrency.format(largestPrice)}đ';
 
       }
     }
@@ -87,6 +164,6 @@ class ProductController extends GetxController {
 
   /// Kiểm tra trạng thái hàng trong kho
   String getProductStockStatus(int stock){
-    return stock > 0 ? 'In Stock' : 'Out of Stock';
+    return stock > 0 ? 'Còn hàng' : 'Hết hàng';
   }
 }

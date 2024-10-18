@@ -59,11 +59,29 @@ class TTexts {
 
 
   // -- Product
-  static const String popularProducts = "Popular Products";
+  static const String popularProducts = "Top bán chạy toàn quốc";
 
   // -- Home
-  static const String homeAppbarTitle = "Good day for shopping";
+  static const String homeAppbarTitle = "Hãy bảo vệ sức khỏe";
   static const String homeAppbarSubTitle = "Taimoor Sikander";
+
+  static const String subTitleHealCheck = "Chào mừng bạn đến với tính năng Tư vấn Sức Khỏe của MediQuick!"
+  " Chỉ mất vài phút để hoàn thành các câu hỏi về các vấn đề sức khỏe như hen suyễn,"
+  " bệnh phổi tắc nghẽn mạn tính, trào ngược dạ dày thực quản và nhiều hơn nữa, "
+  "bạn sẽ nhận được đánh giá sơ bộ cùng những lời khuyên chuyên môn hữu ích. "
+  "Đây là một công cụ tuyệt vời để bạn hiểu rõ hơn về tình trạng sức khỏe hiện tại của mình, "
+  "giúp phòng ngừa bệnh tật và có những biện pháp điều trị kịp thời. Hãy trải nghiệm ngay "
+  "tính năng này và bắt đầu hành trình chăm sóc sức khỏe cho bản thân và gia đình cùng MediQuick!";
+
+  static const String subTitleDisclaimer = "Các thông tin tại công cụ tầm soát này mang tính chất tham khảo. Nó không thay thế cho lời khuyên,"
+      " chẩn đoán hoặc điều trị y tế chuyên nghiệp từ bác sĩ. Để biết rõ về tình trạng và nguy cơ mắc bệnh,"
+      " hãy liên hệ ngay với Bác sĩ, Dược sĩ hoặc chuyên viên y tế để được tư vấn chi tiết cụ thể. "
+      "Nếu bạn nghĩ mình đang trong tình trạng khẩn cấp, hãy liên hệ với bác sĩ ngay lập tức. "
+      "MediQuick cam kết đồng hành cùng bạn trong hành trình sống khỏe mạnh. "
+      "Sứ mệnh của chúng tôi là giúp mọi người dễ dàng tiếp cận với các công cụ chăm sóc sức khỏe hiện đại,"
+      " đưa ra những giải pháp chủ động phòng ngừa và nâng cao sức khỏe toàn diện."
+      "\n MediQuick - vì một cuộc sống khỏe mạnh và hạnh phúc cho tất cả!";
+
 
 
 }

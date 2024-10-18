@@ -13,6 +13,9 @@ class TImages {
   static const String facebook = "assets/logos/facebook-icon.png";
   static const String whiteFingerprint = "assets/logos/DVTW.png";
   static const String darkFingerprint = "assets/logos/DVTB.png";
+  static const String zalo = "assets/logos/zalo.png";
+  static const String robot = "assets/logos/robot.png";
+  static const String bgDoctorAI = "assets/logos/bgdoctorAI.jpg";
 
   // -- Category Icons
   static const String sportIcon = "assets/icons/categories/icons8-bowling-64.png";

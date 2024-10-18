@@ -29,7 +29,7 @@ class CheckoutController extends GetxController {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const TSectionHeading(title: 'Select Payment Method', showActionButton: false,),
+                const TSectionHeading(title: 'Chọn phương thức thanh toán', showActionButton: false,),
                 const SizedBox(height: TSizes.spaceBtwSections),
                 TPaymentTitle(paymentMethod: PaymentMethodModel(name: 'Paypal', image: TImages.paypal),),
                 const SizedBox(height: TSizes.spaceBtwItems/2,),

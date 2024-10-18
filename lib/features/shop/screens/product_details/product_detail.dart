@@ -11,6 +11,7 @@ import 'package:t_store/features/shop/screens/product_details/widgets/rating_sha
 import 'package:t_store/features/shop/screens/product_reviews/product_reviews.dart';
 import 'package:t_store/utils/constants/enums.dart';
 import '../../../../utils/constants/sizes.dart';
+import '../../controllers/product/cart_controller.dart';
 import '../../models/product_model.dart';
 
 class ProductDetail extends StatelessWidget {
@@ -19,6 +20,7 @@ class ProductDetail extends StatelessWidget {
   final ProductModel product;
   @override
   Widget build(BuildContext context) {
+    final controller = CartController.instance;
     return Scaffold(
       bottomNavigationBar: TBottomAddToCart(product: product),
       body: SingleChildScrollView(
@@ -38,22 +40,22 @@ class ProductDetail extends StatelessWidget {
                   //--- Price, Title, Stack & Brand
                   TProductMetaData(product: product,),
 
-                  //--- Attributes
+                  //--- Attributes variable
                   if(product.productType == ProductType.variable.toString()) TProductAttributes(product: product,),
                   if(product.productType == ProductType.variable.toString()) const SizedBox(height: TSizes.spaceBtwSections,),
-
-                  //--- Checkout Button
-                  SizedBox(width: double.infinity, child: ElevatedButton(onPressed: () {}, child: const Text('Checkout'))),
+                  //--- Attributes single
+                  if(product.productType == ProductType.single.toString()) TProductAttributes(product: product,),
+                  if(product.productType == ProductType.single.toString()) const SizedBox(height: TSizes.spaceBtwSections,),
                   const SizedBox(height: TSizes.spaceBtwSections,),
                   //--- Description
-                  const TSectionHeading(title: 'Description', showActionButton: false,),
+                  const TSectionHeading(title: 'Mô tả', showActionButton: false,),
                   const SizedBox(height: TSizes.spaceBtwItems,),
                    ReadMoreText(
                     product.description ?? '',
                     trimLines: 2,
                     trimMode: TrimMode.Line,
-                    trimCollapsedText: 'Show more',
-                    trimExpandedText: 'Less',
+                    trimCollapsedText: 'Mở rộng',
+                    trimExpandedText: 'Thu gọn',
                     moreStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
                     lessStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
                   ),
@@ -64,7 +66,7 @@ class ProductDetail extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const TSectionHeading(title: 'Reviews (199)', showActionButton: false,),
+                      const TSectionHeading(title: 'Đánh giá (199)', showActionButton: false,),
                       IconButton(onPressed: () =>  Get.to(() => const TProductReviewsScreen()), icon: const Icon(Iconsax.arrow_right_3, size: 18))
                     ],
                   ),

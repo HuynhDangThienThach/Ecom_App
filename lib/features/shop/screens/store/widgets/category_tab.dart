@@ -39,11 +39,11 @@ class TCategoryTab extends StatelessWidget {
                   return Column(
                     children: [
                       TSectionHeading(
-                        title: 'You might like', 
+                        title: 'Có thể bạn thích',
                         showActionButton: true, 
                         onPressed: () => Get.to(AllProducts(
                           title: category.name, 
-                          futureMethod: controller.getCategoryProducts(categoryId: category.id, limit: -1),
+                          futureMethod: controller.getCategoryProducts(categoryId: category.id, limit: -1), showAction: false,
                         )),),
                       const SizedBox(height: TSizes.spaceBtwItems),
                       TGrildLayout(itemCount: products.length, itemBuiler: (_, index) => TProductCardVertical(product: products[index])),

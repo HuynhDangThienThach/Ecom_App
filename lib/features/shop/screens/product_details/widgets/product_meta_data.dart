@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:t_store/common/widgets/images/t_circular_image.dart';
 import 'package:t_store/common/widgets/products/product_text/product_price_text.dart';
 import 'package:t_store/common/widgets/texts/product_title_text.dart';
@@ -24,6 +25,9 @@ class TProductMetaData extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        //--- Title
+        TProductTitleText(title: product.title),
+        const SizedBox(height: TSizes.spaceBtwItems/ 1.5,),
         //--- Price & Sale Price
         Row(
           children: [
@@ -38,22 +42,18 @@ class TProductMetaData extends StatelessWidget {
 
             //--- Price
             if (product.productType == ProductType.single.toString() && product.salePrice > 0)
-              Text('\$${product.price}', style: Theme.of(context).textTheme.titleSmall!.apply(decoration: TextDecoration.lineThrough),),
+              Text('${NumberFormat('#,##0').format(product.price)}đ', style: Theme.of(context).textTheme.labelLarge!.apply(decoration: TextDecoration.lineThrough),),
             if (product.productType == ProductType.single.toString() && product.salePrice > 0)  const SizedBox(width: TSizes.spaceBtwItems,),
             TProductPriceText(price: controller.getProductPrice(product), isLarge: true,),
           ],
         ),
         const SizedBox(height: TSizes.spaceBtwItems/ 1.5),
 
-        //--- Title
-        TProductTitleText(title: product.title),
-        const SizedBox(height: TSizes.spaceBtwItems/ 1.5,),
-        
         //--- Stack Status
         Row(
           children: [
-            const TProductTitleText(title: 'Status: '),
-            const SizedBox(width: TSizes.spaceBtwItems/2),
+            const TProductTitleText(title: 'Trạng thái:'),
+            const SizedBox(width: TSizes.spaceBtwSections),
             Text(controller.getProductStockStatus(product.stock), style: Theme.of(context).textTheme.titleMedium,),
           ],
         ),
@@ -62,10 +62,12 @@ class TProductMetaData extends StatelessWidget {
         //--- Brand
         Row(
           children: [
+            const TProductTitleText(title:"Nhà sản xuất:"),
             TCircularImage(image: product.brand != null ? product.brand!.image : '', width: 40, height: 40, overlayColor: dark ? TColors.white : TColors.black),
             TBrandTitleWithVerifiedIcon(title: product.brand != null ? product.brand!.name : '', brandTextSize: TextSizes.medium,),
           ],
-        )
+        ),
+        const SizedBox(height: TSizes.spaceBtwItems/1.5),
       ],
     );
   }

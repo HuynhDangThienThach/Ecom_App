@@ -15,7 +15,7 @@ class BannerRepository extends GetxController {
   Future<List<BannerModel>> fetchBanners() async {
     try{
       // --- Láy các banner có active là true ở fbase
-      final result = await _db.collection('Banners').where('Active', isEqualTo: true).get();
+      final result = await _db.collection('Bannerss').where('Active', isEqualTo: true).get();
       // Chuyển đổi thành danh sách đối tượng thông qua fromSnapshot
       return result.docs.map((documentSnapshot) => BannerModel.fromSnapshot(documentSnapshot)).toList();
     } on FirebaseException catch (e){

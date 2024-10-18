@@ -62,6 +62,7 @@ class ProductModel{
       'Brand': brand!.toJson(),
       'Description': description,
       'ProductType': productType,
+      'Date': date?.toIso8601String(),
       'ProductAttributes': productAttributes != null ? productAttributes!.map((e) => e.toJson()).toList() : [],
       'ProductVariations': productVariations != null ? productVariations!.map((e) => e.toJson()).toList() : [],
     };
@@ -83,6 +84,7 @@ class ProductModel{
       categoryId: data['CategoryId'] ?? '',
       description: data['Description'] ?? '',
       productType: data['ProductType'] ?? '',
+      date: data['Date'] != null ? DateTime.parse(data['Date']) : null,
       brand: BrandModel.fromJson(data['Brand']),
       images: data['Images'] != null ? List<String>.from(data['Images']): [],
       productAttributes: (data['ProductAttributes'] as List<dynamic>).map((e) => ProductAttributeModel.fromJson(e)).toList(),
@@ -105,6 +107,7 @@ class ProductModel{
       categoryId: data['CategoryId'] ?? '',
       description: data['Description'] ?? '',
       productType: data['ProductType'] ?? '',
+      date: data['Date'] != null ? DateTime.parse(data['Date']) : null,
       brand: BrandModel.fromJson(data['Brand']),
       images: data['Images'] != null ? List<String>.from(data['Images']): [],
       productAttributes: (data['ProductAttributes'] as List<dynamic>).map((e) => ProductAttributeModel.fromJson(e)).toList(),

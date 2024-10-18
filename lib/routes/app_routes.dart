@@ -1,5 +1,7 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:t_store/features/shop/screens/health_check/healthCheck.dart';
 import 'package:t_store/features/shop/screens/product_reviews/product_reviews.dart';
+import 'package:t_store/features/shop/screens/profileDS/profileDsScreen.dart';
 import 'package:t_store/routes/routes.dart';
 
 import '../features/authentication/screens/login/login.dart';
@@ -34,5 +36,7 @@ class AppRoutes {
     GetPage(name: TRoutes.signIn, page: () => const LoginScreen()),
     GetPage(name: TRoutes.forgetPassword, page: () => const ForgetPassword()),
     GetPage(name: TRoutes.onBoarding, page: () => const OnBoardingScreen()),
+    GetPage(name: TRoutes.profileDs, page: () => const ProfileDsScreen()),
+    GetPage(name: TRoutes.healthCheck, page: () => const HealthCheck()),
   ];
 }

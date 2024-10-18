@@ -55,7 +55,13 @@ class TSearchContainer extends StatelessWidget {
               Text(
                 text,
                 style: Theme.of(context).textTheme.bodySmall,
-              )
+              ),
+              const Spacer(),
+              const Icon(
+                  Iconsax.camera,
+                  color: TColors.darkerGrey,
+                ),
+
             ],
           ),
         ),

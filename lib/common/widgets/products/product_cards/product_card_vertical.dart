@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:t_store/common/images/t_rounded_image.dart';
 import 'package:t_store/common/widgets/custom_shapes/containers/rounded_container.dart';
 import 'package:t_store/common/widgets/products/cart/product_cart_add_cartButton.dart';
@@ -41,7 +42,7 @@ class TProductCardVertical extends StatelessWidget {
           children: [
             //--- Thumbnail, Wishlist, Button, Discount Tag
             TRoundedContainer(
-              height: 180,
+              height: 170,
               width: 180,
               padding: const EdgeInsets.all(TSizes.sm),
               backgroundColor: dark ? TColors.dark : TColors.light,
@@ -61,16 +62,13 @@ class TProductCardVertical extends StatelessWidget {
                     top: 12,
                     child: Padding(
                       padding: const EdgeInsets.only(left: TSizes.sm),
-                      child: TRoundedContainer(
+                      child: salePercentage != '0' ? TRoundedContainer(
                         radius: TSizes.sm,
                         backgroundColor: TColors.secondary.withOpacity(0.8),
                         padding: const EdgeInsets.symmetric(
                             horizontal: TSizes.sm, vertical: TSizes.xs),
-                        child: Text(
-                          '$salePercentage%',
-                          style: Theme.of(context).textTheme.labelLarge!.apply(color: TColors.black),
-                        ),
-                      ),
+                        child:Text('$salePercentage%', style: Theme.of(context).textTheme.labelLarge!.apply(color: TColors.black),)
+                      ): null,
                     ),
                   ),
                   //--- Favourite Icon Button
@@ -105,13 +103,11 @@ class TProductCardVertical extends StatelessWidget {
                     children: [
                       if(product.productType == ProductType.single.toString() && product.salePrice >0)
                         Padding(
-                            padding: const EdgeInsets.only(left: TSizes.sm),
+                            padding: const EdgeInsets.only(right: TSizes.md),
                             child: Text(
-                              product.price.toString(),
-                              style: Theme.of(context).textTheme.labelMedium!.apply(decoration: TextDecoration.lineThrough),
+                              style: Theme.of(context).textTheme.labelLarge!.apply(decoration: TextDecoration.lineThrough, color: TColors.textSecondary),
+                              '${NumberFormat('#,##0').format(product.price)}đ',
                             )),
-
-
                         Padding(
                             padding: const EdgeInsets.only(left: TSizes.sm),
                             child: TProductPriceText(price: controller.getProductPrice(product),)),

@@ -29,6 +29,35 @@ class ProductRepository extends GetxController {
     }
   }
 
+  // Get stock > 50 products
+  Future<List<ProductModel>> getStockProducts() async{
+    try {
+      final snapshot = await _db.collection('Products').where('Stock', isGreaterThan: 50).limit(4).get();
+      return snapshot.docs.map((e) => ProductModel.fromSnapshot(e)).toList();
+    } on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e){
+      throw TPlatformException(e.code).message;
+    } catch (e){
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+  // Get new products
+  Future<List<ProductModel>> getNewProducts() async{
+    try {
+      final snapshot = await _db.collection('Products').orderBy('Date', descending: true).limit(4).get();
+      return snapshot.docs.map((e) => ProductModel.fromSnapshot(e)).toList();
+    } on FirebaseException catch (e){
+      throw TFirebaseException(e.code).message;
+    } on PlatformException catch (e){
+      throw TPlatformException(e.code).message;
+    } catch (e){
+      throw 'Something went wrong. Please try again';
+    }
+  }
+
+
   /// Get limited featured products
   Future<List<ProductModel>> getAllFeaturedProducts() async{
     try {

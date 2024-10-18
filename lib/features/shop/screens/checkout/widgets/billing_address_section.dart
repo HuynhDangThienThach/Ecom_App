@@ -15,7 +15,7 @@ class TBillingAddressSection extends StatelessWidget {
       () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TSectionHeading(title: "Shipping Address", buttonTitle: "Change", onPressed: () => addressController.selectNewAddressPopup(context),),
+          TSectionHeading(title: "Địa chỉ giao hàng", buttonTitle: "Thay đổi", onPressed: () => addressController.selectNewAddressPopup(context),),
           addressController.selectedAddress.value.id.isNotEmpty
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +39,7 @@ class TBillingAddressSection extends StatelessWidget {
                 )
               ],
             )
-          : Text('Select Address', style: Theme.of(context).textTheme.bodyMedium,)
+          : Text('Chọn địa chỉ', style: Theme.of(context).textTheme.bodyMedium,)
         ],
       ),
     );

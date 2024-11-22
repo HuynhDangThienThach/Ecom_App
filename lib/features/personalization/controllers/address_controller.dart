@@ -38,7 +38,7 @@ class AddressController extends GetxController {
      selectedAddress.value = addresses.firstWhere((element) => element.selectedAddress, orElse: () => AddressModel.empty());
      return addresses;
     } catch(e){
-      TLoaders.errorSnackBar(title: "Address not found!", message: e.toString());
+      TLoaders.errorSnackBar(title: "Không tìm thấy địa chỉ!", message: e.toString());
       return [];
     }
   }
@@ -68,7 +68,7 @@ class AddressController extends GetxController {
       Get.back();
     }catch(e){
       Get.back();
-      TLoaders.errorSnackBar(title: 'Error in Selection', message: e.toString());
+      TLoaders.errorSnackBar(title: 'Lỗi trong lựa chọn', message: e.toString());
     }
   }
 
@@ -76,7 +76,7 @@ class AddressController extends GetxController {
   Future addNewAddresses() async{
     try{
       // Start loading
-      TFullScreenLoader.openLoadingDialog('Storing Address...', TImages.docerAnimation);
+      TFullScreenLoader.openLoadingDialog('Lưu trữ Địa chỉ...', TImages.docerAnimation);
 
       // Check Internet Connectivity
       final isConnected = await NetworkManager.instance.isConnected();
@@ -113,7 +113,7 @@ class AddressController extends GetxController {
       TFullScreenLoader.stopLoading();
 
       // Show Success Message
-      TLoaders.successSnackBar(title: "Congratulations", message: "Your address has been saved successfully");
+      TLoaders.successSnackBar(title: "Chúc mừng", message: "Địa chỉ của bạn đã được lưu thành công");
 
       // Refresh Address Data
       refreshData.toggle();
@@ -210,12 +210,12 @@ class AddressController extends GetxController {
 
       // Hiển thị thông báo thành công
       TLoaders.successSnackBar(
-        title: "Deleted",
-        message: "Address deleted successfully!",
+        title: "Đã xóa",
+        message: "Địa chỉ đã được xóa thành công!",
       );
     } catch (e) {
       Get.back();
-      TLoaders.errorSnackBar(title: 'Error', message: e.toString());
+      TLoaders.errorSnackBar(title: 'Lỗi', message: e.toString());
     }
   }
 }

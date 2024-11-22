@@ -65,6 +65,7 @@ class TImages {
   static const String loadingJuggleAnimation = "assets/images/animations/141397-loading-juggle.json";
   static const String cloudUploadingAnimation = "assets/images/animations/cloud-uploading-animation.json";
   static const String loaderAnimation = "assets/images/animations/loader-animation.json";
+  static const String paymentFailed = "assets/images/animations/payment-failed.json";
 
   // -- OnBoarding Texts
   static const String onBoardingImage1 = "assets/images/on_boarding_images/sammy-line-searching.gif";

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:carp_serializable/carp_serializable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health/health.dart';
@@ -33,15 +32,9 @@ enum AppState {
 }
 
 class _QuizResultScreenState extends State<QuizResultScreen> {
+  late final HealthFactory _healthFactory;
   List<HealthDataPoint> _healthDataList = [];
   AppState _state = AppState.DATA_NOT_FETCHED;
-
-  /// All the data types that are available on Android and iOS.
-  /* List<HealthDataType> get types => (Platform.isAndroid)
-      ? dataTypeKeysAndroid
-      : (Platform.isIOS)
-          ? dataTypeKeysIOS
-          : []; */
 
   static final types = [
     HealthDataType.STEPS,
@@ -52,28 +45,37 @@ class _QuizResultScreenState extends State<QuizResultScreen> {
 
   @override
   void initState() {
-    HealthFactory(useHealthConnectIfAvailable: true);
     super.initState();
+    _healthFactory = HealthFactory(useHealthConnectIfAvailable: true);
   }
 
   Future<void> authorize() async {
-    await Permission.activityRecognition.request();
-    await Permission.location.request();
+    final activityPermission = await Permission.activityRecognition.request();
+    final locationPermission = await Permission.location.request();
 
-    bool? hasPermissions =
-        await HealthFactory().hasPermissions(types, permissions: permissions);
-    hasPermissions = false;
+    if (activityPermission.isPermanentlyDenied || locationPermission.isPermanentlyDenied) {
+      openAppSettings();
+      setState(() => _state = AppState.AUTH_NOT_GRANTED);
+      return;
+    }
+
+    if (activityPermission.isDenied || locationPermission.isDenied) {
+      setState(() => _state = AppState.AUTH_NOT_GRANTED);
+      return;
+    }
+
+    bool? hasPermissions = await _healthFactory.hasPermissions(types, permissions: permissions);
     bool authorized = false;
-    if (!hasPermissions) {
+
+    if (hasPermissions == false) {
       try {
-        authorized = await HealthFactory()
-            .requestAuthorization(types, permissions: permissions);
+        authorized = await _healthFactory.requestAuthorization(types, permissions: permissions);
       } catch (error) {
         debugPrint("Ngoại lệ trong ủy quyền: $error");
       }
     }
-    setState(() => _state =
-        (authorized) ? AppState.AUTHORIZED : AppState.AUTH_NOT_GRANTED);
+
+    setState(() => _state = authorized ? AppState.AUTHORIZED : AppState.AUTH_NOT_GRANTED);
   }
 
   Future<void> fetchData() async {
@@ -89,21 +91,23 @@ class _QuizResultScreenState extends State<QuizResultScreen> {
     _healthDataList.clear();
 
     try {
-      List<HealthDataPoint> healthData =
-          await HealthFactory().getHealthDataFromTypes(yesterday, now, types);
+      List<HealthDataPoint> healthData = await _healthFactory.getHealthDataFromTypes(
+        yesterday,
+        now,
+        types,
+      );
 
-      _healthDataList.addAll(
-          (healthData.length < 100) ? healthData : healthData.sublist(0, 100));
+      if (healthData.isEmpty) {
+        setState(() => _state = AppState.NO_DATA);
+        return;
+      }
+
+      _healthDataList.addAll(HealthFactory.removeDuplicates(healthData));
+      setState(() => _state = AppState.DATA_READY);
     } catch (error) {
       debugPrint("Ngoại lệ trong getHealthDataFromTypes: $error");
+      setState(() => _state = AppState.NO_DATA);
     }
-    _healthDataList = HealthFactory.removeDuplicates(_healthDataList);
-    for (var data in _healthDataList) {
-      debugPrint(toJsonString(data));
-    }
-    setState(() {
-      _state = _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
-    });
   }
 
   @override
@@ -122,6 +126,7 @@ class _QuizResultScreenState extends State<QuizResultScreen> {
       resultText = "Sức khỏe của bạn không đáng lo";
       imagePath = 'assets/icons/health/good_condition.png';
     }
+
     return Scaffold(
       appBar: const TAppBar(
         title: Text('Kết quả đánh giá'),
@@ -137,7 +142,7 @@ class _QuizResultScreenState extends State<QuizResultScreen> {
                   Image.asset(
                     imagePath,
                     height: 200,
-                    width: 200, // Ensures the image maintains its aspect ratio
+                    width: 200,
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -161,8 +166,8 @@ class _QuizResultScreenState extends State<QuizResultScreen> {
                 ],
               ),
             ),
-            const Divider(thickness: 3,),
-            const SizedBox(height: 32), // Increased space for clarity
+            const Divider(thickness: 3),
+            const SizedBox(height: 32),
             const Text(
               "Chỉ số sức khỏe",
               style: TextStyle(
@@ -178,112 +183,114 @@ class _QuizResultScreenState extends State<QuizResultScreen> {
               children: [
                 _buildTextButton("1. Xác thực", authorize),
                 const SizedBox(width: 16),
-                _buildTextButton("2. Lấy dữ liệu sức khỏe", fetchData),
+                _buildTextButton("2. Lấy dữ liệu", fetchData),
               ],
             ),
-            const Divider(thickness: 3,),
+            const Divider(thickness: 3),
             const SizedBox(height: 20),
             Center(child: _content),
           ],
         ),
       ),
-
     );
   }
 
   Widget _buildTextButton(String text, VoidCallback onPressed) {
-    return TextButton(
-      onPressed: onPressed,
-      style: TextButton.styleFrom(
-        backgroundColor: Colors.blue[800],
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
+    return Expanded(
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          backgroundColor: Colors.blue[800],
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
         ),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
         ),
       ),
     );
   }
 
+  Widget _buildHealthDataTile(HealthDataPoint data) {
+    String title = data.typeString;
+    String subtitle = '${data.dateFrom} - ${data.dateTo}';
+    String trailing;
+
+    switch (data.value.runtimeType) {
+      case AudiogramHealthValue:
+        trailing = data.unitString;
+        break;
+      case WorkoutHealthValue:
+        final workout = data.value as WorkoutHealthValue;
+        trailing = "${workout.totalEnergyBurned} ${workout.totalEnergyBurnedUnit?.name}";
+        break;
+      case NutritionHealthValue:
+        final nutrition = data.value as NutritionHealthValue;
+        trailing = "${nutrition.calories} kcal";
+        break;
+      default:
+        trailing = data.value.toString();
+    }
+
+    return ListTile(
+      title: Text(title),
+      subtitle: Text(subtitle),
+      trailing: Text(trailing),
+    );
+  }
+
   Widget get _contentFetchingData => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-              padding: const EdgeInsets.all(20),
-              child: const CircularProgressIndicator(
-                strokeWidth: 10,
-              )),
-          const Text('Nạp dữ liệu...')
-        ],
-      );
-
-  Widget get _contentDataReady => ListView.builder(
-      itemCount: _healthDataList.length,
-      itemBuilder: (_, index) {
-        HealthDataPoint p = _healthDataList[index];
-        if (p.value is AudiogramHealthValue) {
-          return ListTile(
-            title: Text("${p.typeString}: ${p.value}"),
-            trailing: Text(p.unitString),
-            subtitle: Text('${p.dateFrom} - ${p.dateTo}'),
-          );
-        }
-        if (p.value is WorkoutHealthValue) {
-          return ListTile(
-            title: Text(
-                "${p.typeString}: ${(p.value as WorkoutHealthValue).totalEnergyBurned} ${(p.value as WorkoutHealthValue).totalEnergyBurnedUnit?.name}"),
-            trailing:
-                Text((p.value as WorkoutHealthValue).workoutActivityType.name),
-            subtitle: Text('${p.dateFrom} - ${p.dateTo}'),
-          );
-        }
-        if (p.value is NutritionHealthValue) {
-          return ListTile(
-            title: Text(
-                "${p.typeString} ${(p.value as NutritionHealthValue).mealType}: ${(p.value as NutritionHealthValue).name}"),
-            trailing:
-                Text('${(p.value as NutritionHealthValue).calories} kcal'),
-            subtitle: Text('${p.dateFrom} - ${p.dateTo}'),
-          );
-        }
-        return ListTile(
-          title: Text("${p.typeString}: ${p.value}"),
-          trailing: Text(p.unitString),
-          subtitle: Text('${p.dateFrom} - ${p.dateTo}'),
-        );
-      });
-
-  final Widget _contentNoData = const Text('Không có dữ liệu về sức khỏe');
-
-  final Widget _contentNotFetched =
-      const Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-    Text("Nhấn 'Xác thực' để thực hiện cho phép lấy dữ liệu sức khỏe"),
-    Text("Nhấn 'Lấy dữ liệu sức khỏe' để hiển thị chỉ số sức khỏe của bạn"),
-  ]);
-
-  final Widget _authorized = const Text('Đã được cấp phép!');
-
-  final Widget _authorizationNotGranted = const Column(
     mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Text('Chưa cấp quyền.'),
-      Text('Bạn cần cấp tất cả các quyền về sức khỏe trên Health Connect.'),
+    children: <Widget>[
+      Container(
+        padding: const EdgeInsets.all(20),
+        child: const CircularProgressIndicator(
+          strokeWidth: 10,
+        ),
+      ),
+      const Text('Nạp dữ liệu...')
     ],
   );
 
+  Widget get _contentDataReady => ListView.builder(
+    itemCount: _healthDataList.length,
+    itemBuilder: (_, index) => _buildHealthDataTile(_healthDataList[index]),
+  );
+
+  final Widget _contentNoData = const Text('Không có dữ liệu về sức khỏe');
+
+  final Widget _contentNotFetched = const Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Text("Nhấn 'Xác thực' để thực hiện cho phép lấy dữ liệu sức khỏe"),
+      Text("Nhấn 'Lấy dữ liệu sức khỏe' để hiển thị chỉ số sức khỏe của bạn"),
+    ],
+  );
+
+  final Widget _authorized = const Text('Đã được cấp phép!');
+
+  Widget get _authorizationNotGranted => const Center(
+    child: Text(
+      'Bạn chưa cấp quyền truy cập sức khỏe. Vui lòng kiểm tra cài đặt của ứng dụng.',
+      textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 16, color: Colors.red),
+    ),
+  );
+
   Widget get _content => switch (_state) {
-        AppState.DATA_READY => _contentDataReady,
-        AppState.DATA_NOT_FETCHED => _contentNotFetched,
-        AppState.FETCHING_DATA => _contentFetchingData,
-        AppState.NO_DATA => _contentNoData,
-        AppState.AUTHORIZED => _authorized,
-        AppState.AUTH_NOT_GRANTED => _authorizationNotGranted,
-      };
+    AppState.DATA_READY => _contentDataReady,
+    AppState.DATA_NOT_FETCHED => _contentNotFetched,
+    AppState.FETCHING_DATA => _contentFetchingData,
+    AppState.NO_DATA => _contentNoData,
+    AppState.AUTHORIZED => _authorized,
+    AppState.AUTH_NOT_GRANTED => _authorizationNotGranted,
+    _ => const Center(child: Text('Trạng thái không xác định')),
+  };
 }

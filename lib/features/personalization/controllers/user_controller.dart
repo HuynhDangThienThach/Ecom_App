@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,6 +34,33 @@ class UserController extends GetxController {
   void onInit() {
     super.onInit();
     fetchUserRecord();
+  }
+
+  /// Hàm kiểm tra thông tin người dùng đã đầy đủ hay chưa
+  Future<bool> isUserInfoComplete(String? uid) async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser == null) {
+      return false;
+    }
+
+    // Lấy thông tin người dùng từ Firestore dựa trên user ID
+    final userDoc = await FirebaseFirestore.instance.collection('Users').doc(currentUser.uid).get();
+
+    // Kiểm tra xem tài liệu người dùng có tồn tại không
+    if (userDoc.exists) {
+      final userModel = UserModel.fromSnapshot(userDoc);
+
+      // Kiểm tra các trường thông tin quan trọng
+      final hasFirstName = userModel.firstName.isNotEmpty;
+      final hasLastName = userModel.lastName.isNotEmpty;
+      final hasPhoneNumber = userModel.phoneNumber.isNotEmpty;
+
+
+      return hasFirstName && hasLastName && hasPhoneNumber;
+    }
+
+    return false;
   }
 
   /// Fetch user record
@@ -159,7 +187,7 @@ class UserController extends GetxController {
       if(image != null){
         imageUploading.value = true;
         // Upload image
-        final imageUrl = await userRepository.uploadImage('Users/Images/Profiles', image);
+        final imageUrl = await userRepository.uploadImage('Users/Images/Profiles/', image);
 
         // Update user image record
         Map<String, dynamic> json = {'ProfilePicture': imageUrl};
@@ -167,7 +195,7 @@ class UserController extends GetxController {
 
         user.value.profilePicture = imageUrl;
         user.refresh();
-        TLoaders.successSnackBar(title: 'Congratulations', message: 'Your Profile Image has been updated!');
+        TLoaders.successSnackBar(title: 'Chúc mừng', message: 'Đã cập nhật thành công ảnh đại diện');
       }
     }catch(e){
       TLoaders.errorSnackBar(title: 'Chà, thật đáng tiếc!', message: 'Something went wrong: $e');

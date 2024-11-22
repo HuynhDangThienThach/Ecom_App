@@ -31,7 +31,7 @@ class TBrandCard extends StatelessWidget {
             //--- Icon
             Flexible(
               child: TCircularImage(
-                isNetworkImage: false,
+                isNetworkImage: true,
                 image: brand.image,
                 backgroundColor: Colors.transparent,
                 overlayColor:

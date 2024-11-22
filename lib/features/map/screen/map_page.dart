@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:t_store/features/map/screen/maker_data.dart';
 import 'package:http/http.dart' as http;
 
 class Map_Page extends StatefulWidget {
-  const Map_Page({super.key});
+  final String? mediQuickAddress;
+  const Map_Page({super.key, this.mediQuickAddress});
 
   @override
   State<Map_Page> createState() => _Map_PageState();
@@ -61,46 +63,66 @@ class _Map_PageState extends State<Map_Page> {
   }
 
   // add maker on selected location anywhere you want to
-  void _addMaker(LatLng position, String title, String description){
+  void _addMaker(LatLng position, String title, String description) async {
     setState(() {
       final markerData = MakerData(position: position, title: title, description: description);
       _makerData.add(markerData);
       _maker.add(
         Marker(
           point: position,
-          width: 80,
-          height: 80,
-        child: GestureDetector(
-          onTap: () => _showMrkerInfo(markerData),
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(4),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 4,
-                      offset: Offset(0, 2),
-                    )
-                  ]
+          width: 200,
+          height: 200,
+          child: GestureDetector(
+            onTap: () => _showMrkerInfo(markerData),
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(4),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      )
+                    ],
+                  ),
+                  child: Text(
+                    title,
+                    style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
                 ),
-                child: Text(title, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
-              ),
-              const Icon(
-                Icons.location_on,
-                color: Colors.redAccent,
-                size: 40,
-              )
-            ],
+                const Icon(
+                  Icons.location_on,
+                  color: Colors.redAccent,
+                  size: 40,
+                ),
+              ],
+            ),
           ),
-        )
-        )
+        ),
       );
     });
+
+    // Lưu dữ liệu Marker vào SharedPreferences
+    await _saveMarkersToSharedPreferences();
   }
+
+  Future<void> _saveMarkersToSharedPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    final markerList = _makerData.map((marker) {
+      return {
+        'lat': marker.position.latitude,
+        'lng': marker.position.longitude,
+        'title': marker.title,
+        'description': marker.description,
+      };
+    }).toList();
+    prefs.setString('markers', jsonEncode(markerList)); // Lưu danh sách marker dưới dạng JSON
+  }
+
 
   // Show maker dialog
   void _showMarkerDialog(BuildContext context, LatLng potision){
@@ -108,18 +130,15 @@ class _Map_PageState extends State<Map_Page> {
     final TextEditingController descController = TextEditingController();
 
     showDialog(context: context, builder: (context) => AlertDialog(
-      title: const Text("Add Marker"),
+      title: const Text("Thêm địa điểm"),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: titleController,
-            decoration: const InputDecoration(labelText: "Title"),
+            decoration: const InputDecoration(labelText: "Tên địa điểm"),
           ),
-          TextField(
-            controller: titleController,
-            decoration: const InputDecoration(labelText: "Description"),
-          )
+
         ],
       ),
       actions: [
@@ -127,13 +146,13 @@ class _Map_PageState extends State<Map_Page> {
             onPressed: (){
               Navigator.pop(context);
             },
-            child: const Text("Cancel")),
+            child: const Text("Hủy")),
         TextButton(
             onPressed: (){
               _addMaker(potision, titleController.text, descController.text);
               Navigator.pop(context);
             },
-            child: const Text("Save")),
+            child: const Text("Lưu")),
       ],
     ));
   }
@@ -149,7 +168,7 @@ class _Map_PageState extends State<Map_Page> {
           actions: [
             IconButton(
                 onPressed: (){
-                  Navigator.pop(context)                  ;
+                  Navigator.pop(context);
                 }, icon: const Icon(Icons.close)
             )
           ],
@@ -193,12 +212,82 @@ class _Map_PageState extends State<Map_Page> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _searchController.addListener((){
       _searchPlaces(_searchController.text);
     });
+
+    if (widget.mediQuickAddress != null) {
+      _searchController.text = widget.mediQuickAddress!;
+      _searchPlaces(widget.mediQuickAddress!);
+    }
+    _loadMarkersFromSharedPreferences();
   }
+
+  Future<void> _loadMarkersFromSharedPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    final markerString = prefs.getString('markers');
+
+    if (markerString != null) {
+      final List<dynamic> markerList = jsonDecode(markerString);
+      setState(() {
+        for (var markerJson in markerList) {
+          final position = LatLng(markerJson['lat'], markerJson['lng']);
+          final title = markerJson['title'];
+          final description = markerJson['description'];
+
+          final markerData = MakerData(position: position, title: title, description: description);
+          _makerData.add(markerData);
+
+          _maker.add(
+            Marker(
+              point: position,
+              width: 200,
+              height: 200,
+              child: GestureDetector(
+                onTap: () => _showMrkerInfo(markerData),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        title,
+                        style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    const Icon(
+                      Icons.location_on,
+                      color: Colors.redAccent,
+                      size: 40,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+      });
+    }
+  }
+  // Future<void> _clearMarkers() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   await prefs.remove('markers');
+  //   setState(() {
+  //     _makerData.clear();
+  //     _maker.clear();
+  //   });
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -262,7 +351,7 @@ class _Map_PageState extends State<Map_Page> {
                   child: TextField(
                     controller: _searchController,
                     decoration: InputDecoration(
-                      hintText: "Search place...",
+                      hintText: "Tìm kiếm địa điểm",
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
@@ -336,6 +425,33 @@ class _Map_PageState extends State<Map_Page> {
                   },
                   child: const Icon(Icons.add_location)
               ),
+          ),
+          Positioned(
+            bottom: 20,
+            left: 20,
+            child: Column(
+              children: [
+                FloatingActionButton(
+                  backgroundColor: Colors.indigo,
+                  foregroundColor: Colors.white,
+                  onPressed: () {
+                    setState(() {
+                      _isDragging = true;
+                    });
+                  },
+                  child: const Icon(Icons.add_location),
+                ),
+                // const SizedBox(height: 10),
+                // FloatingActionButton(
+                //   backgroundColor: Colors.redAccent,
+                //   foregroundColor: Colors.white,
+                //   onPressed: () async {
+                //     await _clearMarkers(); // Gọi hàm xóa marker
+                //   },
+                //   child: const Icon(Icons.delete),
+                // ),
+              ],
+            ),
           ),
           Positioned(
             bottom: 20,

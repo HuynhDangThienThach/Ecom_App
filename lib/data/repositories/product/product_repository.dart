@@ -29,6 +29,17 @@ class ProductRepository extends GetxController {
     }
   }
 
+  Future<List<ProductModel>> fetchProductsByTitle(String title) async {
+    final query = await FirebaseFirestore.instance
+        .collection('Products')
+        .where('Title', isGreaterThanOrEqualTo: title)
+        .where('Title', isLessThan: '$title\uf8ff')
+        .get();
+    return query.docs.map((doc) => ProductModel.fromSnapshot(doc)).toList();
+  }
+
+
+
   // Get stock > 50 products
   Future<List<ProductModel>> getStockProducts() async{
     try {

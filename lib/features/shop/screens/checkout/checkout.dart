@@ -7,6 +7,7 @@ import 'package:t_store/features/shop/screens/cart/widget/cart_items.dart';
 import 'package:t_store/features/shop/screens/checkout/widgets/billing_address_section.dart';
 import 'package:t_store/features/shop/screens/checkout/widgets/billing_amount_section.dart';
 import 'package:t_store/features/shop/screens/checkout/widgets/billing_payment_section.dart';
+import 'package:t_store/features/shop/screens/paymentStripe/stripeService/stripe_Service.dart';
 import 'package:t_store/utils/constants/colors.dart';
 import 'package:t_store/utils/helpers/helper_functions.dart';
 import 'package:t_store/utils/helpers/pricing_calculator.dart';
@@ -69,9 +70,8 @@ class CheckoutScreen extends StatelessWidget {
                     SizedBox(height: TSizes.spaceBtwItems,),
 
                     //--- Payment Methods
-                    TBillingPaymentSection(),
-                    SizedBox(height: TSizes.spaceBtwItems,),
-
+                    // TBillingPaymentSection(),
+                    // SizedBox(height: TSizes.spaceBtwItems,),
                     //--- Address
                     TBillingAddressSection(),
                   ],
@@ -86,12 +86,43 @@ class CheckoutScreen extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(TSizes.defaultSpace),
         child: ElevatedButton(
-          onPressed: subTotal > 0
-              ? () => orderController.processOrder(totalAmount)
-              : () => TLoaders.warningSnackBar(title: 'Giỏ hàng trống', message: 'Thêm các mặt hàng vào giỏ hàng để tiếp tục'),
+          onPressed: orderController.addressController.selectedAddress.value.id.isNotEmpty && subTotal > 0
+              ? () async {
+            // Kiểm tra hàng tồn kho trước khi thanh toán
+            bool isStockAvailable = true;
+            for (var item in orderController.cartController.cartItems) {
+              final product = await orderController.orderRepository.fetchProductById(item.productId);
+              if (product.stock < item.quantity) {
+                isStockAvailable = false;
+                TLoaders.warningSnackBar(
+                  title: 'Thông báo',
+                  message: 'Sản phẩm này đã hết hàng! Vui lòng quay lại lần sau.',
+                );
+                break; // Thoát khỏi vòng lặp nếu không đủ hàng
+              }
+            }
+
+            if (!isStockAvailable) {
+              return;
+            }
+
+            // Nếu đủ hàng, thực hiện thanh toán
+            await StripeService.instance.makePayment(totalAmount, () {
+              orderController.processOrder(totalAmount);
+            });
+          }
+              : () {
+            if (orderController.addressController.selectedAddress.value.id.isEmpty) {
+              TLoaders.warningSnackBar(
+                title: 'Thông báo',
+                message: 'Vui lòng chọn địa chỉ giao hàng trước khi thanh toán.',
+              );
+            }
+          },
           child: Text('Thanh toán ${NumberFormat('#,##0').format(totalAmount)}đ'),
         ),
       ),
+
     );
   }
 }

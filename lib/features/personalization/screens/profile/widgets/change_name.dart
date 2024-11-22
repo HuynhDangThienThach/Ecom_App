@@ -18,7 +18,7 @@ class ChangeName extends StatelessWidget {
       /// Custom Appbar
       appBar: TAppBar(
         showBackArrow: true,
-        title: Text('Change Name', style: Theme.of(context).textTheme.headlineSmall,),
+        title: Text('Đổi tên', style: Theme.of(context).textTheme.headlineSmall,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(TSizes.defaultSpace),
@@ -26,7 +26,7 @@ class ChangeName extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// Headings
-            Text('Use real name for easy verification. This name will appear on severval pages.', style: Theme.of(context).textTheme.labelMedium,),
+            Text('Sử dụng tên thật để xác minh dễ dàng. Tên này sẽ xuất hiện trên nhiều trang.', style: Theme.of(context).textTheme.labelMedium,),
             const SizedBox(height: TSizes.spaceBtwSections),
 
             /// Text field and button
@@ -36,14 +36,14 @@ class ChangeName extends StatelessWidget {
                   children: [
                     TextFormField(
                       controller: controller.firstName,
-                      validator: (value) => TValidator.validateEmptyText('First name', value),
+                      validator: (value) => TValidator.validateEmptyText('Họ', value),
                       expands: false,
                       decoration: const InputDecoration(labelText: TTexts.firstName, prefixIcon: Icon(Iconsax.user)),
                     ),
                     const SizedBox(height: TSizes.spaceBtwInputFields,),
                     TextFormField(
                       controller: controller.lastName,
-                      validator: (value) => TValidator.validateEmptyText('Last Name', value),
+                      validator: (value) => TValidator.validateEmptyText('Tên', value),
                       expands: false,
                       decoration: const InputDecoration(labelText: TTexts.lastName, prefixIcon: Icon(Iconsax.user)),
                     )
@@ -55,7 +55,7 @@ class ChangeName extends StatelessWidget {
             /// Save Button
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton(onPressed: () => controller.updateUserName(), child: const Text('Save'),),
+              child: ElevatedButton(onPressed: () => controller.updateUserName(), child: const Text('Lưu'),),
             )
           ],
         ),

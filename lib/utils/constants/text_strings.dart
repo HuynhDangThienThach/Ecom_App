@@ -47,6 +47,7 @@ class TTexts {
   static const String loginTitle = "Xin chào!";
   static const String loginSubTitle = "Vui lòng nhập thông tin đăng nhập để tiếp tục.";
   static const String signupTitle = "Tạo tài khoản của bạn";
+  static const String signupGoogleTitle = "Cập nhật thông tin của bạn";
   static const String forgetPasswordTitle = "Quên mật khẩu";
   static const String forgetPasswordSubTitle = "Đừng lo, đôi khi mọi người cũng có thể quên, hãy nhập email của bạn và chúng tôi sẽ gửi cho bạn một liên kết đặt lại mật khẩu.";
   static const String changeYourPasswordTitle = "Email Đặt Lại Mật Khẩu Đã Được Gửi";

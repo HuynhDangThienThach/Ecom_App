@@ -31,16 +31,16 @@ class TSingleAddress extends StatelessWidget {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text("Confirm Deletion"),
-                content: const Text("Are you sure you want to delete this address?"),
+                title: const Text("Xác nhận xóa"),
+                content: const Text("Bạn có chắc chắn muốn xóa địa chỉ này không?"),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(false),
-                    child: const Text("Cancel"),
+                    child: const Text("Hủy"),
                   ),
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(true),
-                    child: const Text("Delete"),
+                    child: const Text("Xóa"),
                   ),
                 ],
               );

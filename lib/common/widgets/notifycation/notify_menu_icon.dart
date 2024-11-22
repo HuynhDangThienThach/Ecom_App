@@ -1,32 +1,37 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:t_store/features/shop/controllers/product/cart_controller.dart';
-import 'package:t_store/features/shop/screens/cart/cart.dart';
 import 'package:t_store/utils/helpers/helper_functions.dart';
 
 import '../../../../utils/constants/colors.dart';
+import 'notifycation_screen.dart';
 
-
-class TNotifyCationIcon extends StatelessWidget {
-  const TNotifyCationIcon({
-    super.key,
-    this.iconColor, this.counterBgColor, this.counterTextColor,
-  });
+class TNotifyCationIcon extends StatefulWidget {
+  const TNotifyCationIcon(
+      {super.key, this.iconColor, this.counterBgColor, this.counterTextColor});
 
   final Color? iconColor, counterBgColor, counterTextColor;
 
   @override
+  State<TNotifyCationIcon> createState() => _TNotifyCationIconState();
+}
+
+class _TNotifyCationIconState extends State<TNotifyCationIcon> {
+
+
+  @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CartController());
     final dark = THelperFunctions.isDarkMode(context);
     return Stack(
       children: [
         IconButton(
-            onPressed: () => Get.to(() => const CartScreen()),
+            onPressed: () {
+              Get.to(() => const NotifyCationScreen());
+            },
             icon: Icon(
               Iconsax.notification,
-              color: iconColor,
+              color: widget.iconColor,
             )),
         Positioned(
           right: 0,
@@ -34,19 +39,18 @@ class TNotifyCationIcon extends StatelessWidget {
             width: 18,
             height: 18,
             decoration: BoxDecoration(
-              color: counterBgColor ?? (dark ? TColors.white : TColors.black),
+              color: widget.counterBgColor ??
+                  (dark ? TColors.white : TColors.black),
               borderRadius: BorderRadius.circular(100),
             ),
             child: Center(
-              child: Obx(
-                    () => Text(controller.noOfCartItem.value.toString(),
+                child: Text("0",
                     style: Theme.of(context).textTheme.labelLarge!.apply(
-                        color: counterTextColor ?? (dark ? TColors.black : TColors.white), fontSizeFactor: 0.8)
-                ),
-              ),
-            ),
+                        color: widget.counterTextColor ??
+                            (dark ? TColors.black : TColors.white),
+                        fontSizeFactor: 0.8))),
           ),
-        )
+        ),
       ],
     );
   }

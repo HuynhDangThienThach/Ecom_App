@@ -9,6 +9,8 @@ import '../../../../data/repositories/authentication/authentication_repository.d
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/helpers/network_manager.dart';
 import '../../../../utils/popups/loaders.dart';
+import '../../screens/signup/signup.dart';
+import '../../screens/signup/signup_google.dart';
 
 
 enum SupportState {
@@ -117,30 +119,34 @@ class LoginController extends GetxController {
   }
 
   //--- Google SigIn Authentication
-  Future<void> googleSignIn() async{
-    try{
-      // Start Loading
+  Future<void> googleSignIn() async {
+    try {
       TFullScreenLoader.openLoadingDialog('Logging you in...', TImages.docerAnimation);
-      // Check Internet Connectivity
+
       final isConnected = await NetworkManager.instance.isConnected();
-      if (!isConnected){
+      if (!isConnected) {
         TFullScreenLoader.stopLoading();
         return;
       }
-      // Google Authentication
+
       final userCredentials = await AuthenticationRepository.instance.signInWithGoogle();
 
-      // Save User Record
-      await userController.saveUserRecord(userCredentials);
+      // Kiểm tra nếu thông tin người dùng đã đầy đủ
+      final isUserInfoComplete = await userController.isUserInfoComplete(userCredentials?.user?.uid);
 
-      // Remove Loader
+      // Dừng loader
       TFullScreenLoader.stopLoading();
 
-      // Redirect
-      AuthenticationRepository.instance.screenRedirect();
 
-    }catch(e){
+      if (!isUserInfoComplete) {
+        Get.offAll(() => const SignupGoogle());
+      } else {
+        // Nếu thông tin đầy đủ, điều hướng theo logic bình thường
+        await AuthenticationRepository.instance.screenRedirect();
+      }
+    } catch (e) {
       TLoaders.errorSnackBar(title: 'Chà, thật đáng tiếc!', message: e.toString());
     }
   }
+
 }

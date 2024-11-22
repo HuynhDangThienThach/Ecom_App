@@ -7,7 +7,6 @@ import 'package:t_store/features/shop/screens/home/widget/home_appbar.dart';
 import 'package:t_store/features/shop/screens/home/widget/home_categories.dart';
 import 'package:t_store/features/shop/screens/home/widget/promo_slider.dart';
 import '../../../../common/widgets/custom_shapes/containers/primary_header_container.dart';
-import '../../../../common/widgets/custom_shapes/containers/search_container.dart';
 import '../../../../common/widgets/products/product_cards/product_card_vertical.dart';
 import '../../../../common/widgets/texts/section_heading.dart';
 import '../../../../utils/constants/sizes.dart';
@@ -21,7 +20,7 @@ class HomeScreen extends StatelessWidget {
     final controller = Get.put(ProductController());
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
+      child: Column(
           children: [
             //--- Header container radius
             const TPrimaryHeaderContainer(
@@ -31,11 +30,7 @@ class HomeScreen extends StatelessWidget {
                   THomeAppBar(),
                   SizedBox(height: TSizes.spaceBtwSections,),
 
-                  //--- SearchBar
-                  TSearchContainer(text: 'Tên thuốc, triệu chứng,... ',),
-                  SizedBox(height: TSizes.spaceBtwSections,),
-
-                  //--- Categories -- Tutorial
+                  //--- Categories
                   Padding(
                     padding: EdgeInsets.only(left: TSizes.defaultSpace),
                     child: Column(
@@ -121,7 +116,7 @@ class HomeScreen extends StatelessWidget {
                     if(controller.isLoading.value) return const TVerticalProductShimmer();
 
                     if(controller.featuredProducts.isEmpty){
-                      return Center(child: Text('No Data Found!!', style: Theme.of(context).textTheme.bodyMedium));
+                      return Center(child: Text('Không có dữ liệu!', style: Theme.of(context).textTheme.bodyMedium));
                     }
                     return TGrildLayout(itemCount: controller.featuredProducts.length, itemBuiler: (_, index) => TProductCardVertical(product: controller.featuredProducts[index],));
                   }),

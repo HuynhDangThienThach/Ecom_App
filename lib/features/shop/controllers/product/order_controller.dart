@@ -6,12 +6,14 @@ import 'package:t_store/navigation_menu.dart';
 import 'package:t_store/utils/popups/full_screen_load.dart';
 import 'package:t_store/utils/popups/loaders.dart';
 
+import '../../../../common/widgets/FailScreen.dart';
 import '../../../../common/widgets/success_screen/success_screen.dart';
 import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../data/repositories/order/order_repository.dart';
 import '../../../../utils/constants/enums.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../models/order_model.dart';
+import '../../models/product_model.dart';
 import 'cart_controller.dart';
 
 class OrderController extends GetxController {
@@ -34,15 +36,25 @@ class OrderController extends GetxController {
   }
 
   /// Add methods for order processing
-  void processOrder(double totalAmount) async{
+  void processOrder(double totalAmount) async {
     try {
       TFullScreenLoader.openLoadingDialog('Đang xử lý đơn hàng', TImages.pencilAnimation);
 
       final userId = AuthenticationRepository.instance.authUser!.uid;
       if (userId.isEmpty) return;
 
-      final order = OrderModel(
+      List<ProductModel> updatedProducts = [];
 
+      for (var item in cartController.cartItems) {
+        final product = await orderRepository.fetchProductById(item.productId);
+        product.stock -= item.quantity;
+        updatedProducts.add(product);
+      }
+
+      // Cập nhật số lượng sản phẩm trong cơ sở dữ liệu
+      await orderRepository.updateProductStocks(updatedProducts);
+
+      final order = OrderModel(
         id: UniqueKey().toString(),
         userId: userId,
         status: OrderStatus.pending,
@@ -54,19 +66,21 @@ class OrderController extends GetxController {
         items: cartController.cartItems.toList(),
       );
 
+      // Lưu đơn hàng
       await orderRepository.saveOrder(order, userId);
-
       cartController.clearCart();
 
+      // Hiển thị màn hình thành công
       Get.off(() => SuccessScreen(
         image: TImages.orderCompletedAnimation,
         title: 'Thanh toán thành công!',
         subTitle: 'Đơn thuốc của bạn sẽ được giao hàng trong thời gian sớm nhất!',
         onPressed: () => Get.offAll(() => const NavigationMenu()),
       ));
-
     } catch (e) {
       TLoaders.errorSnackBar(title: 'Chà, thật đáng tiếc!', message: e.toString());
     }
   }
+
+
 }

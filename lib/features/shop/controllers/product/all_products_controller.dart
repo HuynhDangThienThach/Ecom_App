@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:t_store/utils/popups/loaders.dart';
 import '../../../../data/repositories/product/product_repository.dart';
 import '../../models/product_model.dart';
@@ -27,6 +30,43 @@ class AllProductsController extends GetxController {
       return [];
     }
   }
+
+  void fetchAllProducts() async {
+    final allProducts = await repository.getAllFeaturedProducts();
+    products.value = allProducts;
+  }
+
+  void searchProductByTitle(String title) async {
+    final searchResults = await repository.fetchProductsByTitle(title);
+    products.value = searchResults.isNotEmpty ? searchResults : [];
+    if (searchResults.isEmpty) {
+      TLoaders.errorSnackBar(title: 'Không có sản phẩm', message: 'Không tìm thấy sản phẩm nào với tên "$title".');
+    }
+  }
+
+  void searchByImage({ImageSource source = ImageSource.camera}) async{
+    var image = await ImagePicker().pickImage(source: source);
+
+    if (image != null){
+      final _image = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        uiSettings: [
+          AndroidUiSettings(
+          toolbarTitle: 'Điều chỉnh ảnh',
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: true,
+          toolbarColor: Colors.deepOrange,
+          toolbarWidgetColor: Colors.white,
+          ),
+        ],
+        maxHeight: 224,
+        maxWidth: 224,
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1)
+
+      );
+    }
+  }
+
 
   void sortProducts (String sortOption){
     selectedSortOption.value = sortOption;

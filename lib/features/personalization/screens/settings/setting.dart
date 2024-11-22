@@ -15,6 +15,7 @@ import 'package:t_store/data/repositories/authentication/authentication_reposito
 
 import '../../../../common/addData/addData.dart';
 import '../../../../common/widgets/list_titles/user_profile_title.dart';
+import '../../../../common/widgets/notifycation/notificationRemind.dart';
 import '../../../shop/screens/order/order.dart';
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -28,7 +29,7 @@ class SettingsScreen extends StatelessWidget {
           //--- Header
           TPrimaryHeaderContainer(child: Column(
             children: [
-              TAppBar(title: Text('Account', style: Theme.of(context).textTheme.headlineMedium!.apply(color: TColors.white) ),),
+              TAppBar(title: Text('Tài khoản', style: Theme.of(context).textTheme.headlineMedium!.apply(color: TColors.white) ),),
 
 
             //--- User Profile Card
@@ -42,30 +43,29 @@ class SettingsScreen extends StatelessWidget {
             child: Column(
               children: [
               //--- Account Settings
-                const TSectionHeading(title: 'Account Settings', showActionButton: false,),
+                const TSectionHeading(title: 'Cài đặt tài khoản', showActionButton: false,),
                 const SizedBox(height: TSizes.spaceBtwItems,),
 
-                TSettingMenuTitle(icon: Iconsax.safe_home, title: 'My Addresses', subTitle: 'Set shopping delivery address', onTap: () => Get.to(() => const UserAddressScreen()),),
-                TSettingMenuTitle(icon: Iconsax.shopping_cart, title: 'My Cart', subTitle: 'Add, remove products and move to checkout', onTap: () => Get.to(() => const CartScreen()),),
-                TSettingMenuTitle(icon: Iconsax.location, title: 'Location', subTitle: 'Determine by exact coordinates on the map.', onTap: () => Get.to(() => const Map_Page()),),
-                TSettingMenuTitle(icon: Iconsax.bag_tick, title: 'My Orders', subTitle: 'In-progress and Completed Orders', onTap: () => Get.to(() => const OrderScreen()),),
-                const TSettingMenuTitle(icon: Iconsax.bank, title: 'Bank Account', subTitle: 'Withdraw balance to registered bank account'),
-                const TSettingMenuTitle(icon: Iconsax.discount_shape, title: 'My Coupons', subTitle: 'List of all the discounted coupons'),
-                const TSettingMenuTitle(icon: Iconsax.notification, title: 'Notifications', subTitle: 'Set any kind of notification message'),
-                const TSettingMenuTitle(icon: Iconsax.security_card, title: 'Account Privacy', subTitle: 'Manage data usage and connected accounts'),
+                TSettingMenuTitle(icon: Iconsax.safe_home, title: 'Địa chỉ của tôi', subTitle: 'Đặt địa chỉ giao hàng mua sắm', onTap: () => Get.to(() => const UserAddressScreen()),),
+                TSettingMenuTitle(icon: Iconsax.shopping_cart, title: 'Giỏ hàng của tôi', subTitle: 'Thêm, xóa sản phẩm và chuyển đến trang thanh toán', onTap: () => Get.to(() => const CartScreen()),),
+                TSettingMenuTitle(icon: Iconsax.bag_tick, title: 'Đơn hàng của tôi', subTitle: 'Đơn hàng đang thực hiện và đã hoàn thành', onTap: () => Get.to(() => const OrderScreen()),),
+                TSettingMenuTitle(icon: Iconsax.notification, title: 'Đặt nhắc nhở dùng thuốc', subTitle: 'Đặt bất kỳ loại tin nhắn thông báo nào', onTap: () => Get.to(() => const NotifyCationRemindScreen()),),
+                const TSettingMenuTitle(icon: Iconsax.bank, title: 'Tài khoản ngân hàng', subTitle: 'Rút số dư về tài khoản ngân hàng đã đăng ký'),
+                const TSettingMenuTitle(icon: Iconsax.discount_shape, title: 'Phiếu giảm giá của tôi', subTitle: 'Danh sách tất cả các phiếu giảm giá'),
+                const TSettingMenuTitle(icon: Iconsax.security_card, title: 'Account Privacy', subTitle: 'Quản lý việc sử dụng dữ liệu và các tài khoản được kết nối'),
               //--- App Settings
                 const SizedBox(height: TSizes.spaceBtwSections),
-                const TSectionHeading(title: 'App Settings', showActionButton: false,),
+                const TSectionHeading(title: 'Cài đặt ứng dụng', showActionButton: false,),
                 const SizedBox(height: TSizes.spaceBtwItems,),
-                TSettingMenuTitle(icon: Iconsax.document_upload, title: 'Load Data', subTitle: "Upload Data to your Cloud Firebase", onTap: (){importJsonToFirestore();},),
-                TSettingMenuTitle(icon: Iconsax.document_upload, title: 'Geolocation', subTitle: "Set recommendation based on location", trailing: Switch(value: true, onChanged: (value) {}),),
-                TSettingMenuTitle(icon: Iconsax.security_user, title: 'Safe Mode', subTitle: "Search result is safe for all ages", trailing: Switch(value: false, onChanged: (value) {}),),
-                TSettingMenuTitle(icon: Iconsax.image, title: 'HD Image Quality', subTitle: "Set image quality to be seen", trailing: Switch(value: false, onChanged: (value) {}),),
+                TSettingMenuTitle(icon: Iconsax.document_upload, title: 'Tải dữ liệu', subTitle: "Tải dữ liệu lên Cloud Firebase của bạn", onTap: (){importJsonToFirestore();},),
+                TSettingMenuTitle(icon: Iconsax.document_upload, title: 'Vị trí địa lý', subTitle: "Đặt đề xuất dựa trên vị trí", trailing: Switch(value: true, onChanged: (value) {}),),
+                TSettingMenuTitle(icon: Iconsax.security_user, title: 'Chế độ an toàn', subTitle: "Kết quả tìm kiếm an toàn cho mọi lứa tuổi", trailing: Switch(value: false, onChanged: (value) {}),),
+                TSettingMenuTitle(icon: Iconsax.image, title: 'Chất lượng hình ảnh HD', subTitle: "Đặt chất lượng hình ảnh để xem", trailing: Switch(value: false, onChanged: (value) {}),),
               //--- Logout Button
                 const SizedBox(height: TSizes.spaceBtwSections),
                 SizedBox(
                   width: double.infinity,
-                  child: OutlinedButton(onPressed: () => Get.offAll(AuthenticationRepository.instance.logout()), child: const Text('Logout'),),
+                  child: OutlinedButton(onPressed: () => Get.offAll(AuthenticationRepository.instance.logout()), child: const Text('Đăng xuất'),),
                 ),
                 const SizedBox(height: TSizes.spaceBtwSections * 2.5),
               ],

@@ -17,7 +17,7 @@ class UserAddressScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(AddressController());
     return Scaffold(
-      appBar: TAppBar(showBackArrow: true, title: Text('Addresses', style: Theme.of(context).textTheme.headlineSmall,),),
+      appBar: TAppBar(showBackArrow: true, title: Text('Địa chỉ', style: Theme.of(context).textTheme.headlineSmall,),),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(TSizes.defaultSpace),

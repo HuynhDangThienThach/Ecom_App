@@ -21,7 +21,7 @@ class FavouriteScreen extends StatelessWidget {
     final controller = FavouritesController.instance;
     return Scaffold(
       appBar: TAppBar(
-        title: Text('Wishlist', style: Theme.of(context).textTheme.headlineMedium,),
+        title: Text('Yêu thích', style: Theme.of(context).textTheme.headlineMedium,),
         action: [
           TCircularIcon(
               icon: Iconsax.add,
@@ -40,10 +40,10 @@ class FavouriteScreen extends StatelessWidget {
               builder: (context, snapshot){
 
                 final emptyWidget = TAnimationLoaderWidget(
-                  text: 'Whoops! Wishlist is Empty...',
+                  text: 'Ohh! Danh sách yêu thích đang trống',
                   animation: TImages.pencilAnimation,
                   showAction: true,
-                  actionText: 'Let\'s add some',
+                  actionText: 'Thêm hàng yêu thích',
                   onActionPressed: () {
                     final navigationController = Get.find<NavigationController>();
                     navigationController.selectedIndex.value = 0;}

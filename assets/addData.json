@@ -10,7 +10,7 @@
       "Image": "assets/icons/categories/deal.png",
       "IsFeatured": true,
       "Name":"Deal hot tháng 10",
-      "TargetScreen": "/profileDsScreen"
+      "TargetScreen": "/navigation"
     },
     "3": {
       "Image": "assets/icons/categories/medical.png",
@@ -22,13 +22,13 @@
       "Image": "assets/icons/categories/homeMedical.png",
       "IsFeatured": true,
       "Name":"Hệ thống nhà thuốc",
-      "TargetScreen": "/profileDsScreen"
+      "TargetScreen": "/storeSystem"
     },
     "5": {
       "Image": "assets/icons/categories/order.png",
       "IsFeatured": true,
       "Name":"Đơn hàng",
-      "TargetScreen": "/profileDsScreen"
+      "TargetScreen": "/order"
     }
   }
 }

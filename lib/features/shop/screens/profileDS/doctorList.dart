@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:t_store/utils/constants/image_strings.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../utils/constants/colors.dart';
 
@@ -7,32 +8,32 @@ class DoctorList extends StatelessWidget {
   DoctorList({super.key});
   final List<Map<String, String>> items = [
     {
-      'name': 'DS. Vinh Xuan',
-      'review': '100% Hài lòng',
+      'name': 'DS. Trần Minh Nhật',
+      'review': 'Dược sĩ',
       'Slogan': 'Tận tâm với công việc, tận tình với bệnh nhân',
       'image':
-      'https://cdn.nhathuoclongchau.com.vn/unsafe/https://cms-prod.s3-sgn09.fptcloud.com/Bac_si_Nguyen_Anh_Tuan_bca1a1ec8d.png'
+      'https://cdn.thegioididong.com/med/doctor/Tra%CC%82%CC%80n-Minh-Nha%CC%A3%CC%82t-1200x1200.jpg'
     },
     {
-      'name': 'DS. Vinh Xuan',
-      'review': '100% Hài lòng',
+      'name': 'DS. Đỗ Hương Giang',
+      'review': 'Dược sĩ',
       'Slogan': 'Tận tâm với công việc, tận tình với bệnh nhân',
       'image':
-      'https://cdn.nhathuoclongchau.com.vn/unsafe/https://cms-prod.s3-sgn09.fptcloud.com/Bac_si_Nguyen_Anh_Tuan_bca1a1ec8d.png'
+      'https://cdn.thegioididong.com/med/doctor/do-huong-giang-ctv-1200x1200.jpg'
     },
     {
-      'name': 'DS. Vinh Xuan',
-      'review': '100% Hài lòng',
+      'name': 'DS. Lê Thị Phương',
+      'review': 'Dược sĩ',
       'Slogan': 'Tận tâm với công việc, tận tình với bệnh nhân',
       'image':
-      'https://cdn.nhathuoclongchau.com.vn/unsafe/https://cms-prod.s3-sgn09.fptcloud.com/Bac_si_Nguyen_Anh_Tuan_bca1a1ec8d.png'
+      'https://cdn.thegioididong.com/med/doctor/Le-Thi-Phuong-1-1200x1200.jpg'
     },
     {
-      'name': 'DS. Vinh Xuan',
-      'review': '100% Hài lòng',
+      'name': 'DS. Huỳnh Thị Yến Nhi',
+      'review': 'Dược sĩ',
       'Slogan': 'Tận tâm với công việc, tận tình với bệnh nhân',
       'image':
-      'https://cdn.nhathuoclongchau.com.vn/unsafe/https://cms-prod.s3-sgn09.fptcloud.com/Bac_si_Nguyen_Anh_Tuan_bca1a1ec8d.png'
+      'https://cdn.thegioididong.com/med/doctor/huynh-thi-yen-nhi-tts-1200x1200.jpg'
     },
   ];
   @override
@@ -96,42 +97,59 @@ class DoctorList extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     // Thêm hai nút Nhắn tin và Gọi điện
-                    Column(
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            // Xử lý khi nhấn nút Nhắn tin
-                          },
-                          style: TextButton.styleFrom(
-                              backgroundColor: TColors.primary1
+                Column(
+                  children: [
+                    TextButton(
+                      onPressed: () async {
+                        const url = 'https://zalo.me/0393741706';
+                        final Uri uri = Uri.parse(url);
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(uri);
+                        } else {
+                          throw 'Could not launch $url';
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: TColors.primary1,
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(image: AssetImage(TImages.zalo), width: 28, height: 28),
+                          Text(
+                            'Kết nối Zalo',
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                           ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image(image: AssetImage(TImages.zalo), width: 28,
-                                height: 28,),
-                              Text('Kết nối Zalo', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                            ],
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            // Xử lý khi nhấn nút Gọi điện
-                          },
-                          style: TextButton.styleFrom(
-                              backgroundColor: TColors.error // Màu đỏ
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.call, color: Colors.white,),
-                              SizedBox(width: 3,),
-                              Text('Hotline: 1800 599 964 ', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-                            ],
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
+                    TextButton(
+                      onPressed: () async {
+                        const phoneNumber = '1800599964';
+                        final url = Uri(scheme: 'tel', path: phoneNumber);
+                        if (await canLaunchUrl(url)) {
+                          await launchUrl(url);
+                        } else {
+                          throw 'Could not launch $url';
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: TColors.error,
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.call, color: Colors.white),
+                          SizedBox(width: 3),
+                          Text(
+                            'Hotline: 1800 599 964',
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
                   ],
                 ),
               ),

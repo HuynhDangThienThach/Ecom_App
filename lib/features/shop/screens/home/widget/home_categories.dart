@@ -17,7 +17,7 @@ class THomeCategories extends StatelessWidget {
       if(categoryController.isLoading.value) return const TCategoryShimmer();
 
       if(categoryController.allCategories.isEmpty){
-        return Center(child: Text('No Data Found!', style: Theme.of(context).textTheme.bodyMedium!.apply(color: Colors.white)));
+        return Center(child: Text('Không có dữ liệu!', style: Theme.of(context).textTheme.bodyMedium!.apply(color: Colors.white)));
       }
       return SizedBox(
         height: 120,

@@ -58,12 +58,12 @@ class StoreScreen extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
                         const SizedBox(height: TSizes.spaceBtwItems),
-                        const TSearchContainer(
-                          text: 'Tên thuốc, triệu chứng,... ',
-                          showBackground: false,
-                          showBorder: true,
-                          padding: EdgeInsets.zero,
-                        ),
+                        // const TSearchContainer(
+                        //   hintText: 'Tên thuốc, triệu chứng,... ',
+                        //   showBackground: false,
+                        //   showBorder: true,
+                        //   padding: EdgeInsets.zero,
+                        // ),
                         const SizedBox(height: TSizes.spaceBtwSections),
 
                         TSectionHeading(

@@ -18,7 +18,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = UserController.instance;
     return Scaffold(
-        appBar: const TAppBar(showBackArrow: true, title: Text('Profile'),),
+        appBar: const TAppBar(showBackArrow: true, title: Text('Hồ sơ'),),
         //--- Body
         body: SingleChildScrollView(
           child: Padding(
@@ -36,7 +36,7 @@ class ProfileScreen extends StatelessWidget {
                         return controller.imageUploading.value ? const TShimmerEffect(width: 80, height: 80, radius: 80)
                             : TCircularImage(image: image, width: 80, height: 80, isNetworkImage: networkImage.isNotEmpty,);
                       }),
-                      TextButton(onPressed: () => controller.uploadUserProfilePicture(), child: const Text('Change Profile Picture')),
+                      TextButton(onPressed: () => controller.uploadUserProfilePicture(), child: const Text('Thay đổi ảnh đại diện')),
                     ],
                   ),
                 ),
@@ -47,32 +47,32 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(height: TSizes.spaceBtwItems),
 
                 //--- Heading Profile Info
-                const TSectionHeading(title: 'Profile Information', showActionButton: false,),
+                const TSectionHeading(title: 'Thông tin hồ sơ', showActionButton: false,),
                 const SizedBox(height: TSizes.spaceBtwItems,),
 
-                TProfileMenu(onPressed: () => Get.to(() => const ChangeName()), title: 'Name', value: controller.user.value.fullName,),
-                TProfileMenu(onPressed: () {}, title: 'Username', value: controller.user.value.userName,),
+                TProfileMenu(onPressed: () => Get.to(() => const ChangeName()), title: 'Tên', value: controller.user.value.fullName,),
+                TProfileMenu(onPressed: () {}, title: 'Tên người dùng', value: controller.user.value.userName,),
 
                 const SizedBox(height: TSizes.spaceBtwItems),
                 const Divider(),
                 const SizedBox(height: TSizes.spaceBtwItems),
 
                 //--- Heading Personal Info
-                const TSectionHeading(title: 'Personal Information', showActionButton: false,),
+                const TSectionHeading(title: 'Thông tin cá nhân', showActionButton: false,),
                 const SizedBox(height: TSizes.spaceBtwItems,),
 
-                TProfileMenu(onPressed: () {}, title: 'User ID', value: controller.user.value.id, icon: Iconsax.copy,),
+                TProfileMenu(onPressed: () {}, title: 'ID người dùng', value: controller.user.value.id, icon: Iconsax.copy,),
                 TProfileMenu(onPressed: () {}, title: 'Email', value: controller.user.value.email,),
-                TProfileMenu(onPressed: () {}, title: 'Phone Number', value: controller.user.value.phoneNumber,),
-                TProfileMenu(onPressed: () {}, title: 'Gender', value: 'Male',),
-                TProfileMenu(onPressed: () {}, title: 'Date of Birth', value: '04 December, 2003',),
+                TProfileMenu(onPressed: () {}, title: 'Số điện thoại', value: controller.user.value.phoneNumber,),
+                TProfileMenu(onPressed: () {}, title: 'Giới tính', value: 'Male',),
+                TProfileMenu(onPressed: () {}, title: 'Ngày sinh', value: '04, 12, 2003',),
                 const Divider(),
                 const SizedBox(height: TSizes.spaceBtwItems),
 
                 Center(
                     child: TextButton(
                       onPressed: () => controller.deleteAccountWarningPopup(),
-                      child: const Text('Close Account', style: TextStyle(color: Colors.red),),
+                      child: const Text('Xóa tài khoản', style: TextStyle(color: Colors.red),),
                     )
                 )
               ],
